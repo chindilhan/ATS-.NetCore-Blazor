@@ -1,0 +1,232 @@
+﻿@page "/Screening/Job"
+@using Stx.HRM.Pages.Screening
+@using Stx.Shared.Extensions.Common;
+@using Stx.HRM.Components
+@inherits JobBase
+@inject DialogService dialogService
+
+@*<div class="rowd dno-gutters">
+    <div class="cold">*@
+<div class="card no-radius page-header">
+    <div class="container">
+        <div class="card-header card-header-module-top">
+            <div class="row">
+                <div class="col page-header-title">
+                    <a class="">@JobSummary.Title</a>
+                </div>
+                <div class="text-right col">
+                    <a class="btn btn-light btn-sm" href="/Candidate/Import?actn=newcandidate&job=@BaseEntity.JobOrderID">Add Candidate</a>
+                    <a class="btn btn-light btn-sm" href="/Jobs/Edit?actn=edit&job=@BaseEntity.JobOrderID">Edit Job</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body row px-0 py-2">
+            <div class="col">
+                @*Candidate Statistics*@
+                <div class="card-body p-1">
+                    <ul class="d-flex mb-1">
+                        <li class="p-1 flex-fill text-center @(@ApplicantStage=="sourced"?"active":"")">
+                            <a class="stage p-1"
+                               href="" @onclick="@(async () => { await ApplicationStageClicked("sourced"); })" @onclick:preventDefault>
+                                <span>Sourced</span>
+                                <span class="badge badge-pill @(@JobSummary.SourcedCount > 0 ? "badge-secondary" : "badge-light")">@JobSummary.SourcedCount</span>
+                            </a>
+                        </li>
+                        <li class="p-1 flex-fill text-center @(@ApplicantStage=="applied"?"active":"")">
+                            <a class="stage p-1" href="" @onclick="@(async () => { await ApplicationStageClicked("applied"); })" @onclick:preventDefault>
+                                <span>Applied</span>
+                                <span class="badge badge-pill @(@JobSummary.AppliedCount > 0 ? "badge-secondary" : "badge-light")">@JobSummary.AppliedCount</span>
+                            </a>
+                        </li>
+                        <li class="p-1 flex-fill text-center @(@ApplicantStage=="phnscreen"?"active":"")">
+                            <a class="stage p-1" href="" @onclick="@(async () => { await ApplicationStageClicked("phnscreen"); })" @onclick:preventDefault>
+                                <span>Phone Screen</span>
+                                <span class="badge badge-pill @(@JobSummary.PhoneScreenCount > 0 ? "badge-secondary" : "badge-light")">@JobSummary.PhoneScreenCount</span>
+                            </a>
+                        </li>
+                        <li class="p-1 flex-fill text-center @(@ApplicantStage=="interview"?"active":"")">
+                            <a class="stage p-1" href="" @onclick="@(async () => { await ApplicationStageClicked("interview"); })" @onclick:preventDefault>
+                                <span>Interview</span>
+                                <span class="badge badge-pill @(@JobSummary.InterviewCount > 0 ? "badge-secondary" : "badge-light")">@JobSummary.InterviewCount</span>
+                            </a>
+                        </li>
+                        <li class="p-1 flex-fill text-center @(@ApplicantStage=="offer"?"active":"")">
+                            <a class="stage p-1" href="" @onclick="@(async () => { await ApplicationStageClicked("offer"); })" @onclick:preventDefault>
+                                <span>Offer</span>
+                                <span class="badge badge-pill @(@JobSummary.OfferCount > 0 ? "badge-secondary" : "badge-light")">@JobSummary.OfferCount</span>
+                            </a>
+                        </li>
+                        <li class="p-1 flex-fill text-center @(@ApplicantStage=="hired"?"active":"")">
+                            <a class="stage p-1" href="" @onclick="@(async () => { await ApplicationStageClicked("hired"); })" @onclick:preventDefault>
+                                <span>Hired</span>
+                                <span class="badge badge-pill @(@JobSummary.HiredCount > 0 ? "badge-secondary" : "badge-light")">@JobSummary.HiredCount</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container container-body h-100">
+    <div class="row no-gutters  h-100">
+        <div class="col-3 pr-1">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <input type="search" class="form-control" placeholder="Filter by name, skills or title" autocomplete="off">
+                    <div class="d-flex align-items-center my-1" style="max-height:32px;height:32px">
+                        <div>
+                            <input type="checkbox" @onchange="@(async (args) => {await CandidateListSelectAllChecked((bool)args.Value);} )"
+                                   checked="@PageActionCSS.SelectAllCandidates" placeholder="Select all"> Select All
+                        </div>
+                        <div class="btn-group ml-2 @PageActionCSS.CandidateBulkActionCss">
+                            <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item disabled text-secondary small font-italic" href="#">Apply for selected candidates:</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Send email</a>
+                                <a class="dropdown-item" href="#">Copy to job</a>
+                                <a class="dropdown-item" href="#">Move to stage</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Unqualify candidates</a>
+                                <a class="dropdown-item" href="#">Delete candidates</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body py-2">
+                    <EditForm Model="@CandidateList">
+                        <ul>
+                            @for (int i = 0; i < CandidateList.Count; i++)
+                            {
+                                int inx = i;
+                                <li>
+                                    <div class="candidate-list d-flex mt-2 align-items-center">
+                                        <div class="candidate-selector">
+                                            @*<InputCheckbox @bind-Value="@CandidateList[inx].Select" @onchange="(async() => { await CandidateListCheckedChange(CandidateList[inx].JobCandidateID); })" />*@
+                                            <input type="checkbox" checked="@CandidateList[inx].Selected"
+                                                   @onchange="@(async (args) =>
+                                                                {
+                                                                  await CandidateListCheckedChange(CandidateList[inx].JobCandidateID, (bool)args.Value);
+                                                                } )" />
+                                        </div>
+                                        <div class="flex-shrink-0 mx-2">
+                                            <a href="" @onclick="(async () => { await CandidateEntryClicked(CandidateList[inx].JobCandidateID); })" @onclick:preventDefault
+                                               title="@CandidateList[inx].CandidateName">
+                                                <ProfileAvatarDisp CssClass="" AvatarType="AvatarType.Profile_Small"
+                                                                   ModuleID="101" ImageKey="@CandidateList[inx].JobCandidateID" 
+                                                                   PreviewImageDataUri="@CandidateList[inx].DynmcImageUrl"/>
+                                            </a>
+                                        </div>
+                                        <div class="candidate-list-summary flex-grow-0">
+                                            <div class="flex mb-xxs">
+                                                <div class="flex-grow">
+                                                    <a class="candidate-name font-weight-bold" href="/Candidate/#"
+                                                       @onclick="(async () => { await CandidateEntryClicked(CandidateList[inx].JobCandidateID); })" @onclick:preventDefault
+                                                       title="@CandidateList[inx].CandidateName"><h5 class="">@CandidateList[inx].CandidateName</h5></a>
+                                                </div>
+                                                <div class="candidate-rating">
+                                                </div>
+                                            </div>
+                                            @*<div class="candidate-tags mb-xxs"><div class="hashtags"></div></div>*@
+                                            <div class="candidate-list-footer">
+                                                <span data-info="candidate-applied-time">
+                                                    <time class="secondary-text" datetime="@CandidateList[inx].DateAdded" title="" rel="tooltip">@CandidateList[inx].DateAdded.TimeAgo()</time>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+        <div class="col-9 pl-1">
+            <div class="card candidate-detail min-height-300px">
+                <div class="card-header p-1">
+                    <div class="w-100 d-flex justify-content-end">
+                        <EvaluationToolbar MoveButtonClickedCallback="MoveButtonClicked"
+                                           ToolButtonClickedCallback="ToolButtonClicked"
+                                           ToolMenuClickedCallback="ToolMenuClicked" />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="candidate-list d-flex m-1 align-items-start">
+                            <div class="flex-shrink-0">
+                                <ProfileAvatarDisp CssClass="" AvatarType="AvatarType.Profile"
+                                                   ModuleID="101" ImageKey="@BaseEntity.JobCandidateID" 
+                                                   PreviewImageDataUri="@BaseEntity.DynmcImageUrl"/>
+                            </div>
+                            <div class="candidate-name mx-2 mt-2 ">
+                                <h5 class="font-weight-bold">@BaseEntity.FirstName @BaseEntity.LastName</h5>
+                                <br />
+                                @BaseEntity.CandidateID
+                            </div>
+                        </div>
+                        <div>
+
+                            @BaseEntity.Address
+                            <br />
+                            @BaseEntity.DateAvailable
+                            <br />
+                            @foreach (var exp in BaseEntity.Experiences)
+                            {
+                                <span> @exp.CompanyName | @exp.DateStart | @exp.DateEnd | @exp.Title</span>
+                            }
+                            <br />
+                            @foreach (var exp in BaseEntity.Educations)
+                            {
+                                <span> @exp.Institute | @exp.DateStarted| @exp.DateGraduated | @exp.FieldOfStudy </span>
+                            }
+                        </div>
+
+                    </div>
+                    <div class="row ml-4 mr-2 my-2 ">
+                        @if (BaseEntity.JobCandidateID <= 0 || string.IsNullOrWhiteSpace(CurrentPartialView))
+                        {
+                            //no panel to show. alt disp a message
+                        }
+                        else if (CurrentPartialView == "email")
+                        {
+                            <EmailPanel ComponentActionCallback="ComponentActionCallback" />
+                        }
+                        else if (CurrentPartialView == "comment")
+                        {
+                            <CommentPanel ComponentActionCallback="ComponentActionCallback" />
+                        }
+                        else if (CurrentPartialView == "schedule")
+                        {
+                            <SchedulePanel ComponentActionCallback="ComponentActionCallback" />
+                        }
+                        else if (CurrentPartialView == "evaluate")
+                        {
+                            <ScorecardPanel ComponentActionCallback="ComponentActionCallback" JobOrderID="@BaseEntity.JobOrderID" JobCandidateID="@BaseEntity.JobCandidateID" EvaluatorID="0" />
+                        }
+                        else if (CurrentPartialView == "unqualify")
+                        {
+                            <h3 style="margin-top: 20px;">Confirm Dialog</h3>
+                            <RadzenButton Text=@($"Show confirm dialog")
+                                          Click="@(args => dialogService.Confirm("Do you want to mark the candidate as ineligible?", "Disqualify", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" }))" />
+                        }
+                        else if (CurrentPartialView == "copy-candidate")
+                        {
+                            <CopyCandidatePanel ComponentActionCallback="ComponentActionCallback" JobOrderID="@BaseEntity.JobOrderID" JobCandidateID="@BaseEntity.JobCandidateID" EvaluatorID="0" />
+                        }
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+@using System.Linq.Expressions
+@using System.Globalization;
+@using Stx.Shared.Common;
+@using Stx.CompLibrary.Core;
+
+@typeparam T
+@inherits StxInputBase<T>
+
+    <input type="checkbox" class="@CssClass" id="@Id" @bind="@CurrentValue" placeholder="@Label" >
+    <div class="invalid-feedback">
+        <ValidationMessage For="@ValidationFor" />
+    </div>
+
+@code {
+
+    [Parameter] public string Id { get; set; }
+    [Parameter] public string Label { get; set; }
+    [Parameter] public Expression<Func<T>> ValidationFor { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+}

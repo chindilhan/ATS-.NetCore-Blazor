@@ -1,0 +1,201 @@
+﻿@page "/Jobs/Dashboard"
+@inherits DashboardBase
+@using Stx.HRM.Pages.Jobs
+@using Stx.Shared.Models.HRM
+@using Stx.Shared.Extensions.Common;;
+
+<div class="row no-gutters">
+    <div class="col">
+        <div class="card no-radius page-header">
+            <div class="container">
+                <div class="card-header card-header-module-top page-header-title">
+                        <a class="" href="/Corporate/Settings/#Profile"> Dils Solutions Pte Ltd</a>
+                    <div class="col">
+                    </div>
+                </div>
+
+                <div class="card-body p-2">
+                    <div class="row align-items-start">
+                        <div class="col pull-left">
+                            <a class="btn btn-secondary btn-sm m2" href="/Jobs/Create"> + Post New Job</a>
+                        </div>
+                        <div class="col">
+                            <span>Registered: 8</span>
+                            <span>Published: 5</span>
+                            <span>Draft: 2</span>
+                            <span>Hold: 1 </span>
+                        </div>
+                        <div class="col pull-right">
+                            <button class="btn-link float-end"> View in Carreer Site</button>
+                            @*<button class="float-end"> Get embed code </button>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container container-body"> 
+    <section id="content" aria-label="content" role="main">
+        <section>
+            <ul class="jobs">
+                @foreach (HrJobSummaryDTO job in MainEntityList)
+                {
+                    int id = job.JobOrderID;
+                <li class="job">
+                    <div class="mb-1 accordion" id="@($"accordion{@id}")">
+                   
+                        <div class="accordion-item"  >
+                            <div class="accordion-header pr-2" id="@($"heading{@id}")" >
+                                    <button class="btn btn-link float-start btn-sm text-dark" data-bs-toggle="collapse" data-bs-target="@($"#collapse{@id}")" aria-expanded="false" aria-controls="@($"collapse{@id}")">
+                                        <div class="float-end" aria-hidden="true">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+                                        <span class="arrow-toggle collapsed" data-bs-toggle="collapse" data-bs-target="@($"heading{@id}")" id="collapseP" />
+                                    </button>
+                                <div> @* class="accordion-buttond" data-bs-toggle="collapse" data-bs-target="@($"#collapse{@id}")" aria-expanded="false" aria-controls="@($"collapse{@id}")">*@
+                                    <div class="d-flex">
+                                        <div class="align-self-center flex-grow-1">
+                                            <h4 class="">
+                                                <a class="text-theme-link" href="/Jobs/Edit?actn=edit&id=@job.JobOrderID" data-ui="title" title="Edit job">@job.Title</a>
+                                                <span class="text-muted pl-2 small">
+                                                    <span title="Job Industry">@job.JobIndustryName</span>
+                                                    •
+                                                    <span title="Location">@job.Location, @job.CountryName</span>
+                                                </span>
+                                                @if (!string.IsNullOrWhiteSpace(job.Status))
+                                                {
+                                                    string style = "badge-secondary";
+                                                    @if (job.Status.InIgnoreCase("active", "published")) { style = "badge-success"; }
+                                                    else if (job.Status.InIgnoreCase("expired", "deleted"))
+                                                    {
+                                                        style = "badge-warning";
+                                                        <span class="badge ml-2 small font-weight-normal @style">@job.Status</span>
+                                                    }
+                                                }
+                                            </h4>
+                                        </div>
+
+                                        @*Dropdowns, Links in Right*@
+                                        <div class="text-right d-flex justify-content-end pr-0">
+                                            <a class="btn btn-link text-decoration-none btn-sm small" href="/Candidate/Search?actn=jobcandidates&job=@job.JobOrderID"> Find Candidates</a>
+                                        
+                                            <div class="dropdown">
+                                                <button class="btn btn-link dropdown-toggle text-decoration-none btn-sm small" type="button" id="dropdownMenuButton1"
+                                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Published
+                                                </button>
+                                                <div class="dropdown-menu px-1" aria-labelledby="dropdownMenuButton1">
+                                                    <a>
+                                                        <h6 class="mb-1">Published</h6>
+                                                        <p class="mb-1 text-secondary small">
+                                                            There are issues that will prevent this job being
+                                                            published on some job boards. Please check
+                                                            the job for details.
+                                                        </p>
+                                                    </a>
+                                                    <a>
+                                                        <h6 class="mb-1">Unpublish &amp; use internally</h6>
+                                                        <p class="mb-1 text-secondary small">
+                                                            Visible to your Workable account members only.
+                                                            Account members can refer candidates or ask to join the hiring team.
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="dropdown">
+                                                <button class="btn btn-link dropdown-toggle text-decoration-none btn-sm small" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="bi bi-sliders"></i>
+                                                </button>
+                                                <div class="dropdown-menu small" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item small" href="/jobs/edit?actn=edit&job=@job.JobOrderID"> View job</a>
+                                                    <a class="dropdown-item small" href="/jobs/create?actn=clone&job=@job.JobOrderID"> Clone job</a>
+                                                    <a class="dropdown-item small" href="#"> Leave job</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item small" href="/candidate/create?actn=refer&job=@job.JobOrderID"> Refer candidates</a>
+                                                    <a class="dropdown-item small" href="/candidate/create?actn=import&job=@job.JobOrderID"> Add candidate</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div >
+                            </div >
+                        
+
+                            @*Candidate Statistics*@
+                            <div id="collapse@(@id)" class="accordion-collapse collapse" aria-labelledby="@($"heading{@id}")" data-bs-parent="@($"#accordion{@id}")">
+                                <div class="accordion-body dcard-body p-1">
+                                    <ul class="d-flex mb-1">
+                                        <li class="px-2 py-1 flex-fill text-center">
+                                            <a class="stage" href="/Screening/Job?job=@job.JobOrderID&stage=sourced">
+                                                <strong class="stat-summary-number">@job.SourcedCount</strong>
+                                                <span class="stat-summary-label">Sourced</span>
+                                            </a>
+                                        </li>
+                                        <li class="px-2 py-1 flex-fill text-center">
+                                            <a class="stage" href="/Screening/Job?job=@job.JobOrderID&stage=applied">
+                                                <strong class="stat-summary-number">@job.AppliedCount</strong>
+                                                <span class="stat-summary-label">Applied</span>
+                                            </a>
+                                        </li>
+                                        <li class="px-2 py-1 flex-fill text-center">
+                                            <a class="stage" href="/Screening/Job?job=@job.JobOrderID&stage=phnscreen">
+                                                <strong class="stat-summary-number">@job.PhoneScreenCount</strong>
+                                                <span class="stat-summary-label">Phone Screen</span>
+                                            </a>
+                                        </li>
+                                        <li class="px-2 py-1 flex-fill text-center">
+                                            <a class="stage" href="/Screening/Job?job=@job.JobOrderID&stage=interview">
+                                                <strong class="stat-summary-number">@job.InterviewCount</strong>
+                                                <span class="stat-summary-label">Interview</span>
+                                            </a>
+                                        </li>
+                                        <li class="px-2 py-1 flex-fill text-center">
+                                            <a class="stage" href="/Screening/Job?job=@job.JobOrderID&stage=offer">
+                                                <strong class="stat-summary-number">@job.OfferCount</strong>
+                                                <span class="stat-summary-label">Offer</span>
+                                            </a>
+                                        </li>
+                                        <li class="px-2 py-1 flex-fill text-center">
+                                            <a class="stage" href="/Screening/Job?job=@job.JobOrderID&stage=hired">
+                                                <strong class="stat-summary-number">@job.HiredCount</strong>
+                                                <span class="stat-summary-label">Hired</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                @*Job Statistics*@
+                                <div class="card-footer py-2 small">
+                                    <span class="pull-left secondary-text shark-gray">
+                                        @*<svg class="svg--16 sprout text-bottom mr-xs"><use xlink:href="#icon-check16" data-id="icon-check16"></use></svg>*@
+                                        Published on your
+                                        <a class="external" href="/Corporate/Careers"><strong>careers page</strong></a>
+                                        <span class="hide ml-xs" rel="tooltip" title="This job is not visible to all members">
+                                            @*<svg class="svg--16 hit-gray text-bottom mr-xs"><use xlink:href="#icon-eye-blocked16" data-id="icon-eye-blocked16"></use></svg>*@
+                                        </span>
+                                    </span>
+                                    <span class="pull-right secondary-text shark-gray" data-ui="candidate-info">
+                                        @((job.DateLastApplied == null)? "": $"Last candidate: {job.DateLastApplied.TimeAgoNullable()}")
+                                        @*Candidates: 2 total · 2 active in pipeline · Last candidate: 4 days ago*@
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                }
+            </ul>
+            <div class="hide mt-l">
+                <button class="bottom btn btn--block btn--tertiary-neutral" data-disable-with="Loading...">
+                    Load more jobs
+                </button>
+            </div>
+        </section>
+
+    </section>
+</div>

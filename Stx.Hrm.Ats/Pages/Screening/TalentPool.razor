@@ -1,0 +1,97 @@
+﻿@page "/TalentPool"
+@using Stx.HRM.Pages.Screening
+@using Stx.Shared.Extensions.Common;
+@inherits TalentPoolBase
+
+<h3>Talent Pool</h3>
+
+<div class="card">
+    <div class="card-header">
+        @BaseEntity.FirstName @BaseEntity.LastName
+        @BaseEntity.DateOfBirth | @BaseEntity.Gender | @BaseEntity.Nationality @*| @BaseEntity.Country*@
+    </div>
+    <div class="card-header">
+
+    </div>
+    <div class="card-header">
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <input type="search" placeholder="Filter by name, skills or #tag" autocomplete="off">
+                        <input type="checkbox" placeholder="Select all">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        @foreach (var entry in CandidateList)
+                        {
+                            <li>
+                                <div class="candidate-list d-flex">
+                                    <div class="candidate-selector">
+                                        <input type="checkbox">
+                                    </div>
+                                    <div class="candidate-img flex-shrink-0">
+                                        <img src="" class="avatar-img avatar-small" alt="Profile">
+                                    </div>
+                                    <div class="candidate-list-summary flex-grow-0">
+                                        <div class="flex mb-xxs">
+                                            <div class="flex-grow">
+                                                <a class="candidate-name h6 font-weight-bold" href="/Candidate/#"
+                                                   @onclick="(async () => { await CandidateEntryClicked(entry.JobCandidateID); })" @onclick:preventDefault
+                                                   title="@entry.CandidateName"><span>@entry.CandidateName</span></a>
+                                            </div>
+                                            <div class="candidate-rating">
+                                            </div>
+                                        </div>
+                                        @*<div class="candidate-tags mb-xxs"><div class="hashtags"></div></div>*@
+                                        <div class="candidate-list-footer">
+                                            <span data-info="candidate-applied-time">
+                                                <time class="secondary-text" datetime="@entry.DateAdded" title="" rel="tooltip">@entry.DateAdded.TimeAgo()</time>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="card candidate-detail min-height-300px">
+                <div class="card-header">
+                    <div>
+
+                        @BaseEntity.CandidateID
+                        <br />
+                        @BaseEntity.FirstName @BaseEntity.LastName
+                        <br />
+                        @BaseEntity.Address
+                        <br />
+                        @BaseEntity.DateAvailable
+                        <br />
+                        @foreach (var exp in BaseEntity.Experiences)
+                        {
+                            <span> @exp.CompanyName | @exp.DateStart | @exp.DateEnd | @exp.Title</span>
+                        }
+                        <br />
+                        @foreach (var exp in BaseEntity.Educations)
+                        {
+                            <span> @exp.Institute | @exp.DateStarted| @exp.DateGraduated | @exp.FieldOfStudy </span>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

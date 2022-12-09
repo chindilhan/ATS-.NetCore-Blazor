@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Components\Job\HrReviewQuestion.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+    <Content Remove="Components\Auth\RedirectToLogin.razor" />
+    <Content Remove="Components\Job\JobHiringTeamd.razor" />
+    <Content Remove="Shared\NavMenu.razor" />
+    <Content Remove="Shared\SurveyPrompt.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Shared\NavMenu.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="Components\Job\JobHiringTeamd.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.1" />
+	<PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="6.0.1" />
+    <PackageReference Include="Radzen.Blazor" Version="3.13.10" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="19.3.0.47" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Stx.CompLibrary\Stx.CompLibrary.csproj" />
+    <ProjectReference Include="..\Stx.Shared\Stx.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\app.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <DependentUpon>app.scss</DependentUpon>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Content>
+    <Content Update="wwwroot\css\app.scss">
+      <LastGenOutput>app.css</LastGenOutput>
+      <Generator>SassTranspiler</Generator>
+    </Content>
+    <Content Update="wwwroot\css\radzen-default.css">
+      <DependentUpon>radzen-default.scss</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Content>
+    <Content Update="wwwroot\css\radzen-default.scss">
+      <LastGenOutput>radzen-default.css</LastGenOutput>
+      <Generator>SassTranspiler</Generator>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Auth\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,63 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+@using System.Linq.Expressions
+@using System.Globalization;
+@using Stx.Shared.Common;
+@using Stx.Shared;
+@using Stx.CompLibrary.Core;
+@using Stx.Shared.Extensions.Common
+
+@inherits StxInputBase<TValue>
+@typeparam TValue
+
+
+<div class="btn-group btn-group-toggle border border-secondary overflow-hidden radio-bar" style="border-radius:50px" data-bs-toggle="buttons">
+
+    @for (int i = 0; i < Entries.Count; i++)
+    {
+        int idx = i;
+        ParmStr entry = @Entries[idx];
+        bool isChked = DefaultValue.Compare(entry.Value) ? true : false;
+
+        <label class="btn btn-outline-primary small border-0 @(isChked ? "active" : "")" style="border-radius:50px">
+            <input type="radio" name="@radioGroup" id="@idx" @onchange="(() => SelectionChanged(entry.Value))" checked=@(isChked)>
+            <span class="small">@Entries[idx].Text</span>
+        </label>
+
+        @*<button type="button" @onclick="() => SelectionChanged("")" class="@(!Value ? "active" : "")">@FalseText</button>*@
+
+    }
+</div>
+
+@code {
+
+    [Parameter] public string DefaultValue { get; set; }
+    [Parameter] public List<ParmStr> Entries { get; set; } = new List<ParmStr>() { new ParmStr("1", "AAA"), new ParmStr("2", "BBB") };
+    string radioGroup = DateTime.UtcNow.TimeOfDay.ToString();
+    [Parameter] public EventCallback<TValue> SelectionChange { get; set; }
+
+    [Parameter] public Expression<Func<TValue>> ValidationFor { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool IsDisabled { get; set; } = false;
+
+    void SelectionChanged(string value)
+    {
+        if (typeof(TValue) == typeof(int))
+        {
+            if (int.TryParse(value, out var resultInt))
+            {
+                SelectionChange.InvokeAsync((TValue)(object)resultInt);
+            }
+            else
+            {
+                //result = default;
+                SelectionChange.InvokeAsync((TValue)(object)resultInt);
+                //ValidationFor = $"The selected value is not a valid number.";
+            }
+        }
+        else if (typeof(TValue) == typeof(string))
+        {
+            SelectionChange.InvokeAsync((TValue)(object)value);
+        }
+
+    }
+}

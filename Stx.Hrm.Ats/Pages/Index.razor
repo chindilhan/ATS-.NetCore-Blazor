@@ -1,0 +1,61 @@
+﻿@page "/"
+@using Stx.Shared.Common;
+@using Stx.HRM
+
+<h1>ATS PAGE ## Stx.HRM ##</h1>
+
+<a href="/Candidate/Search"> Candidate Search</a>
+<br />
+<a href="/Corporate/Settings"> Corporate Settings </a>
+
+
+<br />
+<a href="/Candidate/TalentSearch"> Talent Search</a>
+
+
+<br />
+<a href="/Candidate/Import"> Add New Applicant</a>
+<br />
+
+<div class="d-flex justify-content-center">
+    <a class="text-center" href="/Jobs/Create">Create a Job</a>
+</div>
+
+<div pl-4>
+    <div class="icon">
+      <i class="bi bi-arrow-down-right"></i>
+      <div class="label">arrow-down-right</div>
+    </div>
+    <div class="icon">
+      <i class="bi bi-file-earmark-binary"></i>
+      <div class="label">arrow-down-right</div>
+    </div>
+        <div class="icon">
+      <i class="bi bi-arrow-90deg-up"></i>
+      <div class="label">arrow-90deg-up</div>
+    </div>
+    <div class="icon">
+      <i class="bi bi-arrow-bar-down"></i>
+      <div class="label">arrow-bar-down</div>
+    </div>
+    <div class="icon">
+      <i class="bi bi-arrow-bar-left"></i>
+      <div class="label">arrow-bar-left</div>
+    </div>
+</div>    
+
+@*<div class="font-weight-bold text-danger ml-5">@IntProp</div>
+<div class="font-weight-bold text-danger ml-5">@IntPropEventVal</div>
+
+<EditForm Model="IntProp">
+
+    <Stx.HRM.Components.TestTvalComp TValue="int" @bind-Value="@IntProp" ValidationFor="@(()=> IntProp)"
+                                     Entries="@(new List<ParmStr>(new[] { new ParmStr("1", "Yes"), new ParmStr("0", "No")}))"
+                                     SelectionChange="@(item => @IntPropEventVal = item)" />
+</EditForm>
+
+@code {
+    public int IntProp { get; set; }
+    public int IntPropEventVal { get; set; }
+}*@
+

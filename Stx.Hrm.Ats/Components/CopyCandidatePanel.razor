@@ -1,0 +1,54 @@
+﻿@using Stx.HRM.Components
+@inherits CopyCandidatePanelBase
+
+
+<div class="w-100 m-2">
+    <EditForm Model="@CandSchedule">
+        <DataAnnotationsValidator />
+
+        <div class="row my-2">
+            <h6>Copy xxx to: </h6>
+        </div>
+
+        <div class="row my-1">
+            <div class="col-sm-3">
+                <div class="form-check col-form-label">
+                    <input class="form-check-input" type="radio" name="exampleRadios" value="" id="job2">
+                    <label class="form-check-label" for="job2">
+                        Software Engineer
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="">
+                    <Radzen.Blazor.RadzenDropDown @bind-Value="@CandSchedule.Desctiption" Placeholder="Add event details"
+                                                  id="thoughts" class="form-control w-100" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-1">
+            <div class="col-sm-3">
+                <div class="form-check col-form-label">
+                    <input class="form-check-input" type="radio" name="exampleRadios" value="" id="job1">
+                    <label class="form-check-label" for="job1">
+                        Assistant Manager
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                    <Radzen.Blazor.RadzenDropDown @bind-Value="@CandSchedule.Desctiption" Placeholder="Add event details"
+                                                  id="thoughts" class="form-control w-100" />
+            </div>
+        </div>
+
+        <div class="row my-1">
+            <div class="form-group float-end my-2 col-sm-7">
+                <button type="submit" @onclick="@(()=> SubmitButtonClicked("copy"))" class="btn btn-primary float-end ml-1"> Copy Candidate </button>
+                <button type="submit" @onclick="@(()=> SubmitButtonClicked("move"))" class="btn btn-primary float-end ml-1"> Move Candidate </button>
+                <button type="submit" @onclick="@(()=> CloseButtonClicked())" class="btn btn-link float-end"> Close</button>
+            </div>
+        </div>
+
+    </EditForm>
+</div>

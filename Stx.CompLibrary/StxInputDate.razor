@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+@using System.Linq.Expressions
+@using System.Globalization;
+@using Stx.Shared.Common;
+@using Stx.CompLibrary.Core;
+
+@typeparam T
+@inherits InputDateBase<T>
+
+    <div class="col mb-1">
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend input-group-sm">
+                <span class="input-group-text" id="inputGroup-sizing-sm">@Label</span>
+            </div>
+            <InputDate @bind-Value="@CurrentValue" @bind-Value:format="dd/MM/yyyy" 
+                       class="form-control" id="@Id" placeholder="@Label" aria-describedby="inputGroup-sizing-sm" 
+                       DisplayName="@Label"
+                       ParsingErrorMessage="The {0} field has an incorrect date value.">
+            </InputDate>
+                   @*@bind="@CurrentValue" placeholder="@Label" aria-describedby="inputGroup-sizing-sm">*@
+            <div class="invalid-feedback">
+                <ValidationMessage For="@ValidationFor" />
+            </div>
+        </div>
+    </div>
+
+
+    @code {
+
+        private InputType _Type = InputType.Date;
+        [Parameter] public InputType Type { get { return InputType.Date; } set { _Type = value; } }
+        [Parameter] public string Id { get; set; }
+        [Parameter] public string Label { get; set; }
+        [Parameter] public Expression<Func<T>> ValidationFor { get; set; }
+        [Parameter] public RenderFragment ChildContent { get; set; }
+
+        private string _CssClasses = "";
+        [Parameter] public string CssClasses {
+            get { return _CssClasses; }
+            set { _CssClasses = $"form-control {@CssClass}"; }
+        }
+
+    }

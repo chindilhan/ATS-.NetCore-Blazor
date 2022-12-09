@@ -1,0 +1,24 @@
+﻿@page "/Candidate/Preview"
+@using Stx.HRM.Pages.Candidate
+@inherits PreviewBase
+
+
+<div class="container">
+    <h3>Candidate Preview</h3>
+    <div class="card">
+
+        <div class="card-header">
+            @BaseEntity.FirstName @BaseEntity.LastName
+            @BaseEntity.DateOfBirth | @BaseEntity.Gender | @BaseEntity.Nationality @*| @BaseEntity.Country*@
+        </div>
+
+        <div class="card-header">
+
+        </div>
+
+        <div class="card-header">
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@using Stx.Shared.Common
+
+<div class="w-100 mx-2">
+    <EditForm Model="@CommentData">
+        <div class="form-group">
+            <h6 class="my-1">New Comment</h6>
+                <Radzen.Blazor.RadzenTextArea @bind-Value="@CommentData.Comment" Placeholder="Add your comment here. Candidate will not see your comments."
+                                              Rows="5" class="form-control w-100" />
+        </div>
+        <div class="form-group float-end my-2">
+            <button type="submit" @onclick="@(()=> SubmitButtonClicked())" class="btn btn-primary float-end my-2">Submit</button>
+            <button type="submit" @onclick="@(()=> CloseButtonClicked())" class="btn btn-link float-end my-2">Close</button>
+        </div>
+
+    </EditForm>
+</div>
+
+@code {
+
+    public class CommentsData
+    {
+        public string Comment { get; set; }
+    }
+
+    public CommentsData CommentData { get; set; } = new CommentsData();
+
+    [Parameter]
+    public EventCallback<ReturnObj> ComponentActionCallback { get; set; }
+
+    protected async Task SubmitButtonClicked()
+    {
+        if (!string.IsNullOrWhiteSpace(CommentData.Comment))
+        {
+            ReturnObj ret = new ReturnObj(true) { RetResult = CommentData.Comment };
+            await ComponentActionCallback.InvokeAsync(ret);
+        }
+    }
+
+    protected async Task CloseButtonClicked()
+    {
+        await ComponentActionCallback.InvokeAsync(new ReturnObj(false));
+    }
+}

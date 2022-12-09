@@ -1,0 +1,295 @@
+﻿@page "/Corporate/Settings/{catg}"
+@page "/Corporate/Settings"
+@using Stx.HRM.Pages.Corporate
+@using Stx.HRM.Components.CorporateComp
+@using Microsoft.AspNetCore.Authorization
+@using Stx.Hrm.Ats.Components.CorporateComp
+@attribute [Authorize]
+@inherits SettingsBase
+
+<div class="container">
+
+    <EditForm Model="@BaseEntity" OnValidSubmit="HandleValidSubmitAsync">
+        <div class="row">
+
+            <div class="col-3 filter-column">
+                <CorpSettingMenu MenuButtonClickedCallback="SettingMenuButtonClicked" />
+            </div>
+
+            <div class="col-9 search-result-column">
+
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row ml-4 mr-2 my-2 ">
+                            @if (string.IsNullOrWhiteSpace(CurrentPartialView))
+                            {
+                                //no panel to show. alt disp a message
+                            }
+                            else if (CurrentPartialView == "profile")
+                            {
+                                <CorpProfilePanel ComponentActionCallback="ComponentActionCallback" CorporateID="BaseEntity.CorporateID" />
+                            }
+                            else if (CurrentPartialView == "dept")
+                            {
+                                <DepartmentPanel ComponentActionCallback="ComponentActionCallback" CorporateID="BaseEntity.CorporateID" />
+                            }
+                            else if (CurrentPartialView == "team")
+                            {
+                                <TeamPanel ComponentActionCallback="ComponentActionCallback" CorporateID="BaseEntity.CorporateID"/>
+                            }
+                            else if (CurrentPartialView == "billing")
+                            {
+                                <BillingPanel ComponentActionCallback="ComponentActionCallback" />
+                            }
+                            else if (CurrentPartialView == "plan")
+                            {
+                                <PackagePanel ComponentActionCallback="ComponentActionCallback" />
+                            }
+                            else if (CurrentPartialView == "preference")
+                            {
+                                <PreferencePanel ComponentActionCallback="ComponentActionCallback" CorporateID="BaseEntity.CorporateID"/>
+                            }
+
+
+                            else if (CurrentPartialView == "workflow")
+                            {
+                                <WorkflowPanel ComponentActionCallback="ComponentActionCallback" />
+                            }
+                            else if (CurrentPartialView == "templates")
+                            {
+                                <TemplatePanel ComponentActionCallback="ComponentActionCallback" CorporateID="BaseEntity.CorporateID"/>
+                            }
+                            else if (CurrentPartialView == "interview-tools")
+                            {
+                                <InterviewToolsPanel ComponentActionCallback="ComponentActionCallback" CorporateID="BaseEntity.CorporateID"/>
+                            }
+                            else if (CurrentPartialView == "integrations")
+                            {
+                                <IntegrationPanel ComponentActionCallback="ComponentActionCallback" />
+                            }
+                            else if (CurrentPartialView == "privacy")
+                            {
+                                <PrivacyPanel ComponentActionCallback="ComponentActionCallback" />
+                            }
+
+                            else if (CurrentPartialView == "user-preference")
+                            {
+                                <UserPreferencePanel ComponentActionCallback="ComponentActionCallback" />
+                            }
+                            else if (CurrentPartialView == "user-profile")
+                            {
+                                <UserProfilePanel ComponentActionCallback="ComponentActionCallback" />
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </EditForm>
+</div>
+
+
+@*<div class="container row">
+
+    <div class="col-sm-3">
+        <SettMenu />
+    </div>
+
+    <div class="col-sm-7">
+        <div class="mod">
+            <div class="module-header">
+                <div class="clearfix">
+                    <div class="module-header">
+                        <h3>
+                            Filters
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="module-content">
+                <form class="form">
+                    <fieldset>
+                        <div class="grid">
+                            <div class="grid__cell one-half">
+                                <div class="control-group">
+                                    <div class="_-_-_-shared-ui-molecules-control-text-___styles__field">
+                                        <label class="_-_-_-shared-ui-molecules-control-text-___styles__input-group">
+                                            <span class="_-_-_-shared-ui-molecules-control-text-___styles__label">
+                                                <span class="_-_-_-shared-ui-atoms-text-body-___styles__body _-_-_-shared-ui-molecules-control-text-___styles__required _-_-_-shared-ui-atoms-text-base-___styles__danger">
+                                                    <strong class="_-_-_-shared-ui-helpers-hocs-withTextStyles-___styles__strong">
+                                                        *
+                                                    </strong>
+                                                </span>
+                                                <span id="7836851698456786_label" class="_-_-_-shared-ui-atoms-text-body-___styles__body  _-_-_-shared-ui-atoms-text-base-___styles__emphasis">
+                                                    <strong class="_-_-_-shared-ui-helpers-hocs-withTextStyles-___styles__strong">
+                                                        Company name
+                                                    </strong>
+                                                </span>
+                                            </span>
+                                            <div class="_-_-_-shared-ui-atoms-input-text-illustrated-___styles__input">
+                                                <div class="_-_-_-shared-ui-atoms-icon-container-___styles__illustrated-container">
+                                                    <input aria-required="true" id="7836851698456786" name="name" data-testid="name" required="" data-ui="company-name" aria-labelledby="7836851698456786_label" type="text" class="_-_-_-shared-ui-atoms-input-base-___styles__input " value="dils">
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group mb-z">
+                                    <div class="_-_-_-shared-ui-molecules-control-text-___styles__field">
+                                        <label class="_-_-_-shared-ui-molecules-control-text-___styles__input-group">
+                                            <span class="_-_-_-shared-ui-molecules-control-text-___styles__label">
+                                                <span class="_-_-_-shared-ui-atoms-text-body-___styles__body _-_-_-shared-ui-molecules-control-text-___styles__required _-_-_-shared-ui-atoms-text-base-___styles__danger">
+                                                    <strong class="_-_-_-shared-ui-helpers-hocs-withTextStyles-___styles__strong">
+                                                        *
+                                                    </strong>
+                                                </span>
+                                                <span id="6062716618592172_label" class="_-_-_-shared-ui-atoms-text-body-___styles__body  _-_-_-shared-ui-atoms-text-base-___styles__emphasis">
+                                                    <strong class="_-_-_-shared-ui-helpers-hocs-withTextStyles-___styles__strong">
+                                                        Subdomain
+                                                    </strong>
+                                                </span>
+                                            </span>
+                                            <div class="_-_-_-shared-ui-atoms-input-text-illustrated-___styles__input">
+                                                <div class="_-_-_-shared-ui-atoms-icon-container-___styles__illustrated-container">
+                                                    <input aria-required="true" id="6062716618592172" name="subdomain" data-testid="subdomain" required="" data-ui="company-subdomain" aria-labelledby="6062716618592172_label" aria-describedby="6062716618592172_helper" type="text" class="_-_-_-shared-ui-atoms-input-base-___styles__input " value="dils">
+                                                    <span class="_-_-_-shared-ui-atoms-text-body-___styles__body _-_-_-shared-ui-atoms-input-text-illustrated-___styles__suffix _-_-_-shared-ui-atoms-text-base-___styles__muted">
+                                                        .workable.com
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <span class="_-_-_-shared-ui-atoms-text-secondary-___styles__secondary _-_-_-shared-ui-molecules-control-text-___styles__helper _-_-_-shared-ui-atoms-text-base-___styles__muted" id="6062716618592172_helper">
+                                            You can use letters, numbers, and dashes. It just can’t end with a dash.
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid__cell one-half">
+                                <div class="control-group">
+                                    <div class="_-_-_-shared-ui-molecules-control-text-___styles__field">
+                                        <label class="_-_-_-shared-ui-molecules-control-text-___styles__input-group">
+                                            <span class="_-_-_-shared-ui-molecules-control-text-___styles__label">
+                                                <span class="_-_-_-shared-ui-atoms-text-body-___styles__body _-_-_-shared-ui-molecules-control-text-___styles__required _-_-_-shared-ui-atoms-text-base-___styles__danger">
+                                                    <strong class="_-_-_-shared-ui-helpers-hocs-withTextStyles-___styles__strong">
+                                                        *
+                                                    </strong>
+                                                </span>
+                                                <span id="790579032982828_label" class="_-_-_-shared-ui-atoms-text-body-___styles__body  _-_-_-shared-ui-atoms-text-base-___styles__emphasis">
+                                                    <strong class="_-_-_-shared-ui-helpers-hocs-withTextStyles-___styles__strong">
+                                                        Website
+                                                    </strong>
+                                                </span>
+                                            </span>
+                                            <div class="_-_-_-shared-ui-atoms-input-text-illustrated-___styles__input">
+                                                <div class="_-_-_-shared-ui-atoms-icon-container-___styles__illustrated-container">
+                                                    <input aria-required="true" id="790579032982828" name="website_url" data-testid="website_url" required="" data-ui="company-website" aria-labelledby="790579032982828_label" type="text" class="_-_-_-shared-ui-atoms-input-base-___styles__input " value="https://www.workable.com">
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="_-_-_-shared-ui-molecules-control-text-___styles__field">
+                                        <label class="_-_-_-shared-ui-molecules-control-text-___styles__input-group">
+                                            <span class="_-_-_-shared-ui-molecules-control-text-___styles__label">
+                                                <span id="356572871153795_label" class="_-_-_-shared-ui-atoms-text-body-___styles__body  _-_-_-shared-ui-atoms-text-base-___styles__emphasis">
+                                                    <strong class="_-_-_-shared-ui-helpers-hocs-withTextStyles-___styles__strong">
+                                                        Phone number
+                                                    </strong>
+                                                </span>
+                                            </span>
+                                            <div class="_-_-_-shared-ui-atoms-input-phone-___styles__phone-container " data-testid="phone" data-ui="company-phone" data-ignore-focus="true">
+                                                <div class="_-_-_-shared-ui-atoms-input-text-illustrated-___styles__input">
+                                                    <div class="_-_-_-shared-ui-atoms-icon-container-___styles__illustrated-container">
+                                                        <div class="intl-tel-input allow-dropdown separate-dial-code iti-sdc-2">
+                                                            <div class="flag-container">
+                                                                <div class="selected-flag" role="combobox" aria-owns="country-listbox" tabindex="0" title="United States: +1">
+                                                                    <div class="iti-flag us">
+                                                                    </div>
+                                                                    <div class="selected-dial-code">
+                                                                        +1
+                                                                    </div>
+                                                                    <div class="iti-arrow">
+                                                                    </div>
+                                                                </div>
+                                                                <ul class="country-list hide" id="country-listbox" aria-expanded="false" role="listbox" aria-activedescendant="iti-item-us">
+                                                                    <li class="country preferred active" id="iti-item-us" role="option" data-dial-code="1" data-country-code="us" aria-selected="true">
+                                                                        <div class="flag-box">
+                                                                            <div class="iti-flag us">
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="country-name">
+                                                                            United States
+                                                                        </span>
+                                                                        <span class="dial-code">
+                                                                            +1
+                                                                        </span>
+                                                                    </li>
+                                                                    <li class="country preferred" id="iti-item-gb" role="option" data-dial-code="44" data-country-code="gb">
+                                                                        <div class="flag-box">
+                                                                            <div class="iti-flag gb">
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="country-name">
+                                                                            United Kingdom
+                                                                        </span>
+                                                                        <span class="dial-code">
+                                                                            +44
+                                                                        </span>
+                                                                    </li>
+                                                                    <li class="country preferred" id="iti-item-ca" role="option" data-dial-code="1" data-country-code="ca">
+                                                                        <div class="flag-box">
+                                                                            <div class="iti-flag ca">
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="country-name">
+                                                                            Canada
+                                                                        </span>
+                                                                        <span class="dial-code">
+                                                                            +1
+                                                                        </span>
+                                                                    </li>
+                                                                    <li class="country standard" id="iti-item-ax" role="option" data-dial-code="358" data-country-code="ax">
+                                                                        <div class="flag-box">
+                                                                            <div class="iti-flag ax">
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="country-name">
+                                                                            Åland Islands
+                                                                        </span>
+                                                                        <span class="dial-code">
+                                                                            +358
+                                                                        </span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <input name="phone" type="tel" class="_-_-_-shared-ui-atoms-input-base-___styles__input " autocomplete="off" placeholder="201-555-0123">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-actions">
+                        <div class="pack">
+                            <div class="pack__item">
+                                <button class="_-_-_-shared-ui-atoms-button-base-___button__button _-_-_-shared-ui-atoms-button-base-___button__normal _-_-_-shared-ui-atoms-button-primary-___primary__default " type="submit">
+                                    Save changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+

@@ -1,0 +1,130 @@
+﻿@using Stx.HRM.Components.CorporateComp
+@inherits CorpProfilePanelBase
+
+
+<div class="w-100">
+    <EditForm Model="@BaseEntry">
+        <DataAnnotationsValidator />
+
+        <div class="row mt-2 w-100">
+            <h5 class="align-bottom">Company Profile</h5>
+        </div>
+
+        <div class="row mt-2 w-100">
+            <ProfileAvatar AvatarType="Stx.HRM.Components.AvatarType.Logo" CssClass="" ModuleID="@ModuleID" ImageKey="@BaseEntry.CorporateID" 
+                HeaderText="@BaseEntry.Name" SubText="@BaseEntry.ShortName" PreviewImageDataUri="@BaseEntry.DynmcImageUrl" />
+
+        </div>
+
+@*        <div class="row mt-2 w-100">
+            <div class="d-flex">
+                <div class="acol-2">
+                    <LogoAvatar IsSmallAvatar="false" CssClass="" ModuleID="@ModuleID" ImageKey="@BaseEntry" />
+                </div>
+                <div class="d-flex flex-column align-items-start ml-3">
+                    <h5 class="my-2">@BaseEntry.Name</h5>
+                    <h6 class="my-2 text-muted mb-auto">@BaseEntry.CountryID</h6>
+                    <div class="d-flex flex-row pb-1">                       
+                        <label class="btn btn-secondary btn-sm small">
+                          <i class="fa fa-upload fa-2x" aria-hidden="true"></i> Change
+                          <InputFile id="fileInput" title="" class="" placeholder="Status" style="display: none;" OnChange="@OnInputFileChange" />
+                        </label>
+                        <button class="btn btn-primary btn-sm small ml-1">Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>*@
+
+        <div class="row mt-2 w-100">
+            <div class="col">
+                <h6 class="my-2">Company name</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@BaseEntry.Name" class="form-control w-100" Placeholder="Select a time-zone" id="timezone" />
+                </div>
+            </div>
+            <div class="col">
+                <h6 class="my-2">Website</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@BaseEntry.Website" class="form-control w-100" Placeholder="Company website" id="website" />
+                    <ValidationMessage For=@(() => BaseEntry.Website) />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2 w-100">
+            <div class="col">
+                <h6 class="my-2">Industry</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@BaseEntry.Category" class="form-control w-100" Placeholder="Company registration number" id="registrationnum" />
+                </div>
+            </div>
+            <div class="col">
+                <h6 class="my-2">Number of employees</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@BaseEntry.Name" class="form-control w-100" Placeholder="Company website" id="website" />
+                    <ValidationMessage For=@(() => BaseEntry.Name) />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2 w-100">
+            <div class="col">
+                <h6 class="my-2">Country</h6>
+                <div class="form-group my-2">
+                    <InputNumber @bind-Value="@BaseEntry.CountryID" class="form-control w-100" Placeholder="Select a location" id="location" />
+                    <ValidationMessage For=@(() => BaseEntry.CountryID) />
+                </div>
+            </div>
+            <div class="col">
+                <h6 class="my-2">Registration number</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@BaseEntry.CommercialRegNum" class="form-control w-100" Placeholder="Company registration number" id="registrationnum" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-2 w-100">
+            <div class="col">
+                <h6 class="my-2">Phone number</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@BaseEntry.Phone" class="form-control w-100" Placeholder="Add an attendee" id="attendee" />
+                </div>
+            </div>
+            <div class="col">
+                <h6 class="my-2">Short name</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@BaseEntry.ShortName" class="form-control w-100" Placeholder="Select a location" id="location" />
+                    <ValidationMessage For=@(() => BaseEntry.ShortName) />
+                </div>
+            </div>
+        </div>
+        <div class="row form-group mt-2 w-100">
+            <div class="col">
+                <h6 class="my-2">Address</h6>
+                <div class="form-group my-2">
+                    <Radzen.Blazor.RadzenTextArea @bind-Value="@BaseEntry.Address" Placeholder="Address"
+                                                  Rows="3" id="thoughts" class="form-control w-100" />
+                    <ValidationMessage For=@(() => BaseEntry.Address) />
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2 w-100">
+            <div class="col">
+                <h6 class="my-2">Company profile description</h6>
+                <div class="form-group my-2">
+                    <Radzen.Blazor.RadzenTextArea @bind-Value="@BaseEntry.Remarks" Placeholder="Add a short description. This description also will appear on the careers page."
+                                                  Rows="5" id="thoughts" class="form-control w-100" />
+                    <ValidationMessage For=@(() => BaseEntry.Remarks) />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group float-end my-2">
+            <button type="submit" @onclick="@(()=> SubmitButtonClicked())" class="btn btn-primary float-end "> Save </button>
+            <button type="submit" @onclick="@(()=> CloseButtonClicked())" class="btn btn-link float-end ">Close</button>
+        </div>
+
+    </EditForm>
+</div>

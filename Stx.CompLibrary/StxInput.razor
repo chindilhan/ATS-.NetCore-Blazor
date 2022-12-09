@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+@using System.Linq.Expressions
+@using System.Globalization;
+@using Stx.Shared.Common;
+@using Stx.CompLibrary.Core;
+
+@typeparam T
+@inherits StxInputBase<T>
+
+<div class="col mb-1">
+    <div class="input-group input-group-sm">
+        <div class="input-group-prepend input-group-sm">
+            <span class="input-group-text" id="inputGroup-sizing-sm">@Label</span>
+        </div>
+
+        <input type="@Type.ToString().ToLower()" class="form-control @CssClass" id="@Id" @bind="@CurrentValue"
+               readonly="@IsDisabled" placeholder="@Label" aria-describedby="inputGroup-sizing-sm">
+
+        <div class="invalid-feedback">
+            <ValidationMessage For="@ValidationFor" />
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter] public string Id { get; set; }
+    [Parameter] public string Label { get; set; }
+    [Parameter] public Expression<Func<T>> ValidationFor { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public InputType Type { get; set; } = InputType.Text;
+    [Parameter] public bool IsDisabled { get; set; } = false;
+    //[Parameter] public bool ShowDefaultOption { get; set; } = true;
+    //[Parameter] public List<SelectListItem> DataSource { get; set; }
+
+}

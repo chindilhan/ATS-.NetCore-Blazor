@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+@using System.Linq.Expressions
+@using Stx.CompLibrary.Core;
+@using Stx.Shared.Common
+
+@typeparam T
+@inherits StxInputBase<T>
+
+    <div class="col mb-1">
+
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend input-group-sm">
+                @if (!string.IsNullOrWhiteSpace(Label))
+                {
+                    <span class="input-group-text" id="inputGroup-sizing-sm">@Label</span>
+                }
+            </div>
+            <select class="form-select form-select-sm @CssClass" id="@Id" @bind="CurrentValueAsString">
+                @if (ShowDefaultOption)
+                {
+                    <option value="0" hidden disabled>- Select -</option>
+                }
+                @foreach (var item in DataSource ?? new List<SelectListItem>())
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+                @ChildContent
+            </select>
+
+            <div class="invalid-feedback">
+                <ValidationMessage For="@ValidationFor" />
+            </div>
+        </div>
+
+    </div>
+
+    @code {
+        [Parameter] public string Id { get; set; }
+        [Parameter] public string Label { get; set; }
+        [Parameter] public List<SelectListItem> DataSource { get; set; } = new List<SelectListItem>();
+        [Parameter] public Expression<Func<T>> ValidationFor { get; set; }
+        [Parameter] public RenderFragment ChildContent { get; set; }
+        [Parameter] public bool ShowDefaultOption { get; set; } = true;
+
+    }

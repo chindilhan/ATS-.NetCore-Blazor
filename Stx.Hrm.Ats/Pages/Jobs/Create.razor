@@ -1,0 +1,252 @@
+﻿@page "/Jobs/Create"
+@page "/Jobs/Edit"
+@using Stx.HRM.Core
+@using Stx.HRM.Pages.Jobs
+@using Stx.HRM.Components.Job
+@using Stx.Hrm.Ats.Components.Job
+@using Stx.Shared.Common
+@inherits CreateBase
+
+
+<div class="container mt-2 mp-2">
+
+    
+    <EditForm Model="@BaseEntity" OnValidSubmit="HandleValidSubmitAsync" class="row px-1 pt-3 pb-3">
+        <div class="col-md-9 card">
+
+            <DataAnnotationsValidator />
+            <CustomValidator @ref="CustomValidator" />
+
+            <div class="card-header">
+                <ul class="nav step-anchor">
+                    @foreach (var step in StepConfigs)
+                    {
+                        <li class="nav-item d-inline-flex">
+                            @if (step.ID > StepConfigs.FirstOrDefault().ID)
+                            {
+                                <span class="bi-chevron-right mb-2 align-self-center"></span>
+                            }
+                            <a href="" @onclick="@(()=> NavigateToStep(@step))" @onclick:preventDefault class="nav-link h4 px-2 align-self-center @step.StepStyle">
+                                @step.StepName <br><small>@step.StepDesc</small>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="card-body py-1  ">
+
+                @if (string.IsNullOrWhiteSpace(CurrentPartialView.StepCode))
+                {
+                    //no panel to show. alt disp a message
+                }
+                else if (CurrentPartialView.StepCode == "job_details")
+                {
+                <div class="mt-2  ">
+                    @*<form>*@
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="form-label" for="Title">Title</label>
+                            <InputText @bind-Value="@BaseEntity.Title" placeholder="Title" id="Title" class="form-control" />
+                            <ValidationMessage For=@(() => BaseEntity.Title) />
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col ">
+                            <label class="form-label" for="JobIndustry">Job Industry</label>
+                            <RadzenDropDown AllowClear="false" TValue="int?" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                                            Data="@JobIndustryList" @bind-Value="@BaseEntity.JobIndustry" TextProperty="Text" ValueProperty="Value"
+                                            Placeholder="Select job industry..." id="JobIndustry" class="form-control" />
+                            <ValidationMessage For=@(() => BaseEntity.JobIndustry) />
+
+                        </div>
+                        <div class="form-group col ">
+                            <label class="form-label" for="JobSpecialty">Job Specialty</label>
+                            <RadzenDropDown AllowClear="false" TValue="int?" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                                            Data="@JobSpecialtyList" @bind-Value="@BaseEntity.JobSpecialty" TextProperty="Text" ValueProperty="Value"
+                                            Placeholder="Select job specialty..." id="JobSpecialty" class="form-control" />
+                            <ValidationMessage For=@(() => BaseEntity.JobSpecialty) />
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col ">
+                            <label class="form-label" for="Country">Country</label>
+                            <RadzenDropDown AllowClear="false" TValue="short" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                                            Data="@CountryList" @bind-Value="@BaseEntity.Country" TextProperty="Text" ValueProperty="Value"
+                                            Placeholder="Select..." id="Country" class="form-control" />
+                            <ValidationMessage For=@(() => BaseEntity.Country) />
+                        </div>
+                        <div class="form-group col ">
+                            <label class="form-label" for="Location">Location</label>
+                            <InputText @bind-Value="@BaseEntity.Location" placeholder="Location" id="Location" class="form-control" />
+                            <ValidationMessage For=@(() => BaseEntity.Location) />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="Description">Job Description</label>
+                        <RadzenTextArea @bind-Value="@BaseEntity.Description" placeholder="Description" id="Description" class="form-control" Rows="7" />
+                        <ValidationMessage For=@(() => BaseEntity.Description) />
+                    </div>
+                   
+                    <div class="row">
+                        <div class="form-group col-auto ">
+                            <label class="form-label" for="Salary">Salary from</label>
+                            <RadzenNumeric @bind-Value="@BaseEntity.Salary" placeholder="Salary" id="Salary" class="form-control" />
+                        </div>
+                        <div class="form-group col-auto ">
+                            <label class="form-label" for="SalaryTo">Salary to</label>
+                            <RadzenNumeric @bind-Value="@BaseEntity.SalaryTo" placeholder="SalaryTo" id="SalaryTo" class="form-control" />
+                        </div>
+                        <div class="form-group col-auto w-25">
+                            <label class="form-label" for="SalaryPayCycle">Pay Cycle</label>
+                            <RadzenDropDown AllowClear="false" TValue="short" AllowFiltering="false"
+                                            Data="@PayCycleList" @bind-Value="@BaseEntity.SalaryPayCycle" TextProperty="Text" ValueProperty="Value"
+                                            Placeholder="Select pay cycle..." id="SalaryPayCycle" class="form-control" />
+                            <ValidationMessage For=@(() => BaseEntity.SalaryPayCycle) />
+                        </div>
+                        <div class="form-group col-auto ">
+                            <label class="form-label" for="IsShowSalary">Display salary? @BaseEntity.IsShowSalary</label>
+                            <div class="" id="IsShowSalary">
+                                
+                                <RadioBar TValue="bool" 
+                                    SelectedValue="@(BaseEntity.IsShowSalary ? "1" : "0")"  
+                                    SelectionChanged="@(item => @BaseEntity.IsShowSalary = item)"
+                                    Entries="@(new List<ParmStr>(new[] { new ParmStr("1", "Yes"), new ParmStr("0", "No") }))" />
+                            </div>
+                        </div>
+                    </div>
+                    @*</form>*@
+
+                    <h4 class="mb-3">Employment details</h4>
+                    <div class="row">
+                        <div class="form-group col ">
+                            <label class="form-label" for="EmploymentType">Employment Type</label>
+                            <RadzenDropDown AllowClear="false" TValue="short?" AllowFiltering="false"
+                                            Data="@EmploymentTypeList" @bind-Value="@BaseEntity.EmploymentType" TextProperty="Text" ValueProperty="Value"
+                                            Placeholder="Select an employment type..." id="EmploymentType" class="form-control" />
+                            <ValidationMessage For=@(() => BaseEntity.EmploymentType) />
+                        </div>
+                        <div class="form-group col ">
+                            <label class="form-label" for="NumOfAvilJobs">Num of Vacancies</label>
+                            <RadzenNumeric @bind-Value="@BaseEntity.NumOfAvilJobs" placeholder="NumOfAvilJobs" id="NumOfAvilJobs" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col ">
+                            <label class="form-label" for="DateStart">Start Date</label>
+                            <InputDate @bind-Value="@BaseEntity.DateStart" placeholder="DateStart" id="DateStart" class="form-control" />
+                        </div>
+                        <div class="form-group col ">
+                            <label class="form-label" for="DateEnd">End Date</label>
+                            <InputDate @bind-Value="@BaseEntity.DateEnd" placeholder="DateEnd" id="DateEnd" class="form-control" />
+                            <ValidationMessage For=@(() => BaseEntity.DateEnd) />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col ">
+                            <label class="form-label" for="JobCode">Job Ref. Code</label>
+                            <InputText @bind-Value="@BaseEntity.JobCode" placeholder="JobCode" id="JobCode" class="form-control" />
+                        </div>
+                        <div class="form-group col ">
+                            <label class="form-label" for="FileAttachments">File Attachments</label>
+                            <InputText @bind-Value="@BaseEntity.FileAttachments" placeholder="FileAttachments" id="FileAttachments" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="pt-2">
+                        <div class="row">
+                            <div class="form-group col">
+                                <label class="form-label" for="JobPostPrivacy">Job Post Privacy @BaseEntity.JobPostPrivacy</label>
+                                <div class="" id="JobPostPrivacy">
+                                    
+                                    <RadioBar TValue="short?" SelectedValue="@(BaseEntity.JobPostPrivacy.GetValueOrDefault(0).ToString())" 
+                                        SelectionChanged="@(item => @BaseEntity.JobPostPrivacy = item)"
+                                        Entries="@(new List<ParmStr>(new[] { new ParmStr("0", "Public"), new ParmStr("1", "Internal"), new ParmStr("2", "Private") }))" />
+                                </div>
+                            </div>
+                            <div class="form-group col">
+                                <label class="form-label" for="IsInterviewRequired">Interview Required? @BaseEntity.IsInterviewRequired</label>
+                                <div class="" id="IsInterviewRequired">                                    
+
+                                    <RadioBar TValue="bool" 
+                                        SelectedValue="@(BaseEntity.IsInterviewRequired.GetValueOrDefault() ? "1" : "0")" 
+                                        SelectionChanged="@(item => @BaseEntity.IsInterviewRequired = item)"
+                                        Entries="@(new List<ParmStr>(new[] { new ParmStr("1", "Yes"), new ParmStr("0", "No") }))" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (CurrentPartialView.StepCode == "job_option")
+                {
+                    <div class="mt-2">
+                        <div class="row">
+                            <div class="form-group col ">
+                                <label class="form-label" for="ApplyMethod">Receive Application by</label>
+                                <RadzenDropDown AllowClear="false" TValue="string" AllowFiltering="false"
+                                                Data="@(new ComboStr[] { new ComboStr("E", "Email"), new ComboStr("W", "External Website") } )" @bind-Value="@BaseEntity.ApplyMethod" TextProperty="Text" ValueProperty="Value"
+                                                Placeholder="Receive Application by..." id="ApplyMethod" class="form-control" />
+                                <ValidationMessage For=@(() => BaseEntity.ApplyMethod) />
+                            </div>
+                            <div class="form-group col ">
+                                <label class="form-label" for="ApplyMethodValue">Email/Web Address</label>
+                                <InputText @bind-Value="@BaseEntity.ApplyMethodValue" placeholder="Email/Web Address" id="ApplyMethodValue" class="form-control" />
+                                <ValidationMessage For=@(() => BaseEntity.ApplyMethodValue) />
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (CurrentPartialView.StepCode == "interview_plan")
+                {
+                    <JobReviewQuestions @ref="JobReviewQuestionsCompRef" @bind-ReviewQuestions="@ReviewQuestionList"  
+                        @bind-IsAutoRejectApplicantParm="@IsAutoReject"  
+                        @bind-AutoRejectMailTemplateParm="@BaseEntity.AutoRejectEmailTemplate" 
+                        JobOrder="@BaseEntity" />
+                }
+                else if (CurrentPartialView.StepCode == "hiring_team")
+                {
+                    <JobHiringTeam CorporateID="100"/>
+                }
+
+            </div>
+            <div class="card-footer">
+                <div class="steps-buttons">
+                    <a class="steps-buttons-prev @PrevButtonStyle my-auto" href="" @onclick="@(()=> NavigateNextPrevious("<PREV>"))" @onclick:preventDefault>
+                        <i class="bi-chevron-left pb-1"></i><span class="ps-1">Previous</span>
+                    </a>
+                    <a class="steps-buttons-next @NextButtonStyle my-auto" href="" @onclick="@(()=> NavigateNextPrevious("<NEXT>"))" @onclick:preventDefault>
+                        <span class="pe-1">Next</span> <i class="bi-chevron-right pb-1"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex align-items-start flex-column pb-2 border-bottom">
+                <span class="h4 pt-1 mb-1 text-break">@BaseEntity.Title</span>
+                <span class="text-muted mb-1 medium text-break">
+                    <span title="Job Industry">@BaseEntity.JobIndustry</span>
+                    •
+                    <span title="Location">@BaseEntity.Country, @BaseEntity.Location</span>
+                </span>
+
+                <span class="h6 my-2 text-muted">Saved as Draft</span>
+
+                <div class="form-groupd px-0">
+                    <button class="btn btn-sm btn-primary col-auto mb-1 " style="min-width: 100px;" type="submit"><i class="bi bi-save"></i> &nbsp; Save Draft &nbsp;</button>
+                    <button class="btn btn-sm btn-primary col-auto mb-1 " style="min-width: 100px;" type="submit"><i class="bi bi-submit"></i> &nbsp; Publish &nbsp;</button>
+                </div>
+            </div>
+
+
+
+        </div>
+    </EditForm>
+</div>
+
+

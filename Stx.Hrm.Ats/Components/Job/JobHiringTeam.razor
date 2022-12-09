@@ -1,0 +1,142 @@
+﻿@using Stx.HRM.Components.CorporateComp
+@using Stx.Hrm.Ats.Components.Job
+@using Stx.Shared.Extensions.Common
+@inherits JobHiringTeamBase
+
+
+<div class="w-100 m-2">
+
+    @if (IsAddNewRecord)
+    {
+        <div class="row w-75">
+            <div class="float-start">
+                @if (BaseEntry.ID <= 0)
+                {
+                    <h5 class="align-bottom">Add a New Member</h5>
+                }
+                else
+                {
+                    <h5 class="align-bottom">Edit Team Memeber - @BaseEntry.Name</h5>
+                }
+            </div>
+        </div>
+
+        <div class="row w-75">
+
+            <EditForm Model="@BaseEntry" class="w-75">
+                <DataAnnotationsValidator />
+
+                <div class="row form-group mt-2 w-100">
+                    <div class="col">
+                        <h6 class="my-2">Email</h6>
+                        <div class="form-group my-2">
+                            <InputText @bind-Value="@BaseEntry.Email" class="form-control w-100" Placeholder="Enter new team member's email" id="dept" />
+                            <ValidationMessage For=@(() => BaseEntry.Email) />
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group mt-2 w-100">
+                    <div class="col">
+                        <h6 class="my-2">Tags</h6>
+                        <div class="form-group my-2">
+                            <InputText @bind-Value="@BaseEntry.Tags" class="form-control w-100" Placeholder="Add tags or groups; separated by commas" id="dept" />
+                            <ValidationMessage For=@(() => BaseEntry.Tags) />
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group mt-2 w-100">
+                    <div class="col">
+                        <h6 class="my-2">User permissions</h6>
+                        <div class="form-group d-flex my-2">
+                            <label class="flex mr-2">
+                                <input class="filter-input" type="radio" value="user"  name="userperm" 
+                                    @onchange="@(x => {BaseEntry.UserLevel = (string)x.Value;})"> &nbsp; <span class="flex-grow"> User level access</span>
+                            </label>
+                            <label class="flex">
+                                <input class="filter-input" type="radio" name="userperm"  value="d"> &nbsp; <span class="flex-grow"> Admin level access</span>
+                            </label>
+                            <ValidationMessage For=@(() => BaseEntry.Active) />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group mt-2 w-100">
+                    <div class="col">
+                        <h6 class="my-2">Assign available jobs</h6>
+                        <div class="form-group d-flex my-2">
+                            <div class="border w-100">
+                                <ul>
+                                    @foreach (var job in @AvailJobList)
+                                    {
+                                        <li class="my-1">
+                                            <div class="d-flex flex-column">
+                                                <label class="flex flex-row">
+                                                    <input class="filter-input align-self-center ml-2" type="checkbox" name="userperm" @bind="@job.Selected"> 
+                                                    <span class="align-self-center font-weight-bold ml-2"> @job.Title </span>
+                                                </label>
+                                                <span class="align-self-start text-muted ml-4">@job.Location • @job.Country</span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group float-end my-2">
+                    <button type="submit" @onclick="@(() => SubmitButtonClicked())" class="btn btn-primary float-end "> Invite Team Member</button>
+                    <button @onclick="@(() => PrepareNewEntryPanel("hide"))" @onclick:preventDefault class="btn btn-link float-end ">Close</button>
+                </div>
+            </EditForm>
+        </div>
+    }
+    else
+    {
+        <div class="row d-flex justify-content-between w-100">
+            <div class="float-start">
+                <h5>Team Members</h5>
+            </div>
+            <div class="float-end">
+                <button @onclick="@(()=> AddNewButtonClicked())" class="btn btn-primary btn-sm float-end "> Invite a member</button>
+            </div>
+        </div>
+
+        <div class=" w-100 pt-2">
+            <div class="list-group w-100">
+                @foreach (var entry in @BaseEntryList)
+                {
+                    int id = entry.ID;
+                    <div class="row list-group-item list-group-item-action bd-highlight py-1d">
+                        <div class="ps-1 py-1 col d-flex">
+                            <div class="align-self-center">
+                                <ProfileAvatarDisp AvatarType="AvatarType.Profile_tiny" PreviewImageDataUri="@entry.DynmcImageUrl"  />
+                            </div>
+                            <div class="ps-2 d-flex flex-column justify-content-between">
+                                <h6 class="mb-1">@entry.Email </h6>
+                                @if (!@entry.Tags.IsEmpty())
+                                {
+                                    <small>@entry.Name</small>
+                                }
+                                <p class="mb-1 font-weight-normal">@entry.Tags</p>
+                            </div>
+                        </div>
+
+                        <div class="ps-1 py-1 col my-auto">
+                            <p class="my-auto text-muted medium font-weight-normal">@entry.DateLastModified.ShortDatetimeFormat("dd-MMM-yyyy")</p>
+                        </div>
+
+                        <div class="px-1 py-1 col col-lg-2 col-md-2" role="group" aria-label="Actions">
+                            <div class=" ms-auto float-end">
+                                <button type="button" @onclick="@(() => EntryActionButtonClicked("edit", id))" @onclick:preventDefault class="btn btn-link btn-sm">Edit</button>
+                                <button @onclick="@(() => EntryActionButtonClicked("delete", id))" @onclick:preventDefault class="btn btn-link btn-sm ">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                }               
+            </div>
+        </div>
+    }
+</div>
+
+

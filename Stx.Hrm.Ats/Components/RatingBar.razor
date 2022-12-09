@@ -1,0 +1,92 @@
+﻿@inherits ComponentBase
+@namespace Stx.Shared.Common
+
+    <div class="d-flex btn-group btn-group-toggle sborder-danger" data-bs-toggle="buttons">
+        @for (int i = 0; i < RatingList.Count; i++)
+        {
+            int idx = i;
+            RatingData entry = @RatingList[idx];
+
+            <label class="flex-fill btn @entry.Style btn-outline-success small border-secondary py-1">
+                <input type="radio" name="options" id="@idx" @onchange="(()=> SelectionChanged(entry.Value))">
+                <span class="small">@RatingList[idx].Text</span>
+                @if (!string.IsNullOrWhiteSpace(entry.Icon))
+                {
+                        @if (entry.Icon == "star")
+                        {
+                            <i class="bi bi-star pl-1"></i>
+                        }
+                        else if (entry.Icon == "thumbsup")
+                        {
+                            <i class="bi bi-hand-thumbs-up pl-1"></i>
+                        }
+                        else if (entry.Icon == "nutral")
+                        {
+                            <i class="bi bi-dash-circle pl-1"></i>
+                        }
+                        else if (entry.Icon == "thumbsdown")
+                        {
+                            <i class="bi bi-hand-thumbs-down pl-1"></i>
+                        }
+                        else if (entry.Icon == "reject")
+                        {
+                            <i class="bi bi-x-octagon pl-1"></i>
+                        }
+                        else if (entry.Icon == "heart")
+                        {
+                            <i class="bi bi-heart pl-1"></i>
+                        }
+                }
+            </label>
+        }
+    </div>
+
+    @code {
+        [Parameter] public string RatingMode { get; set; }
+        [Parameter] public int ScorecardID { get; set; }
+
+        [Parameter]
+        public EventCallback<ParmInt> SelectionChange { get; set; }
+
+        private List<RatingData> RatingList { get; set; } = new List<RatingData>();
+        private class RatingData
+        {
+            public string Text { get; set; }
+            public string Value { get; set; }
+            public string Icon { get; set; }
+            public string Style { get; set; }
+        }
+
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                RatingList.AddRange(new RatingData[]
+                {
+                new RatingData() { Text ="Bad Bad", Value="1", Icon ="reject", Style="btn-outline-danger"  },
+                new RatingData() { Text = "Bad", Value = "2", Icon ="thumbsdown" },
+                new RatingData() { Text = "Hmm", Value = "3", Icon ="nutral" },
+                new RatingData() { Text = "Ok", Value = "4", Icon ="thumbsup" },
+                new RatingData() { Text = "Good", Value = "5", Icon ="star" },
+                    });
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        void SelectionChanged(string value)
+        {
+            SelectionChange.InvokeAsync(new ParmInt(ScorecardID, value));
+        }
+
+    }
+
+
+    @*<div>
+            <label class="btn btn-outline-primary"><input type="radio" name="toggle"><span>One</span></label>
+            <label class="btn btn-outline-primary"><input type="radio" name="toggle"><span>Two</span></label>
+            <label class="btn btn-outline-primary"><input type="radio" name="toggle"><span>Three</span></label>
+        </div>*@

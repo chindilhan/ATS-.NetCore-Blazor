@@ -1,0 +1,42 @@
+﻿@inherits ProfileAvatarBase
+
+
+<div class="d-flex">
+    <div class="acol-2">
+        <img src="@PreviewImageDataUri" alt="@AltText" 
+        class="avatar @AvatarStyle @CssClass"
+        onerror="this.onerror=null; this.src='/assets/img/@AvatarDummyImage'; "> @*this.style='padding: 15px;'*@
+    </div>
+    <div class="d-flex flex-column align-items-start ml-3">
+        <h5 class="my-2">@HeaderText</h5>
+        <h6 class="my-2 text-muted mb-auto">@SubText</h6>
+        <div class="d-flex flex-row pb-1">                       
+            <label class="btn btn-secondary btn-sm small">
+                <i class="fa fa-upload" aria-hidden="true"></i> Change
+                <InputFile id="fileInput" title="" class="" placeholder="Status" style="display: none;" OnChange="@OnInputFileChange" />
+            </label>
+            @*<button class="btn btn-primary btn-sm small ml-1">Save</button>*@
+        </div>
+    </div>
+</div>
+
+
+@*
+@if (IsSmallAvatar)
+{
+    <img src="http://localhost:6001/api/CDA?puid=@ModuleID&key=@ImageKey" alt="@AltText" 
+            class="avatar avatar-profile-sm @CssClass"
+            onerror="this.onerror=null; this.src='_content/Stx.HRM/assets/img/avatar-fill.svg'; this.style='padding: 15px;'">
+
+    @*
+    <img src="_content/Stx.HRM/assets/img/avatar-fill.svg" alt="" class="avatar-img @CssClass">
+
+    <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+    </svg>* @
+}
+else //"avatar"
+{
+    <img src="http://localhost:6001/api/CDA?puid=@ModuleID&key=@ImageKey" alt="@AltText" class="avatar avatar-profile @CssClass" 
+        onerror="this.onerror=null; this.src='_content/Stx.HRM/assets/img/avatar-fill.svg'; this.style='padding: 15px;'">
+}*@

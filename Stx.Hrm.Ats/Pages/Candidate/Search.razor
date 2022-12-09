@@ -1,0 +1,529 @@
+﻿@page "/Candidate/Search"
+@page "/Candidate/Search/{actn}/{job}"
+@using Stx.HRM.Components
+@using Stx.HRM.Pages.Candidate
+@inherits SearchBase
+
+
+<div class="container">
+
+    <EditForm Model="@BaseEntity" OnValidSubmit="HandleValidSubmitAsync">
+
+        <div class="row">
+            <div class="col-3 filter-column">
+
+                <div class="row module-header">
+                    <h3 class="small">
+                        <span>Filters</span>
+                    </h3>
+                </div>
+
+                <div id="accordion1">
+                    <div class="card card-filter-panel">
+                        <div class="card-header card-padding-1 filter-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link w-100 float-start text-left rounded-0" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fa float-end" aria-hidden="true"></i>
+                                    <span class="arrow-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapseH" id="collapseP"/>
+                                        Filter by job
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion1">
+                            <div class="card-body card-padding-1">
+                                <div class="filter-content filter-content-scrollable pt-0">
+                                    <ul>
+                                        <li>
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="talent_pool_filter_444499" name="talent_pools[]" type="checkbox" value="444499"><span class="flex-grow">Talent Pool</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" data-ui="select-all-job-options" data-type="active" type="checkbox" value="active"><span class="flex-grow">My active jobs</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="active_filter_1428841" name="jobs[]" type="checkbox" value="1428841"><span class="flex-grow">Senior Software Engineer</span>
+                                                    <span class="ml-s"><span class="inline-block label label--inverse label--volcanic-ash" data-ui="filter-count">1</span></span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="accordion2">
+                    <div class="card card-filter-panel">
+                        <div class="card-header card-padding-1  filter-header" id="headingOne">
+                            <h5 class="mb-0 ">
+                                <button class="btn btn-link w-100 float-start text-left rounded-0" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    <i class="fa float-end" aria-hidden="true"></i>
+                                    Filter by stage
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion2">
+                            <div class="card-body card-padding-1">
+                                <div class="filter-content">
+                                    <ul>
+                                        <li>
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739908" type="checkbox" value="2739908"><span class="flex-grow">Sourced</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739909" type="checkbox" value="2739909"><span class="flex-grow">Applied</span>
+                                                    <span class="ml-s"><span class="inline-block label label--inverse label--volcanic-ash" data-ui="filter-count">1</span></span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739910" type="checkbox" value="2739910"><span class="flex-grow">Phone Screen</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739911" type="checkbox" value="2739911"><span class="flex-grow">Interview</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739912" type="checkbox" value="2739912"><span class="flex-grow">Offer</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739913" type="checkbox" value="2739913"><span class="flex-grow">Hired</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="accordion3">
+
+                    <div class="card card-filter-panel">
+                        <div class="card-header card-padding-1  filter-header" id="heading3">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link " data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                    <i class="fa" aria-hidden="true"></i>
+                                    Filter by application date
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapse3" class="collapse show" aria-labelledby="heading3" data-parent="#accordion3">
+                            <div class="card-body card-padding-1">
+                                <div class="filter-content">
+                                    <ul>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_all" type="radio" value="all"><span class="flex-grow">All</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_month" type="radio" value="last_month"><span class="flex-grow">Last month</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_3_months" type="radio" value="last_3_months"><span class="flex-grow">Last 3 months</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_year" type="radio" value="last_year"><span class="flex-grow">Last year</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*endddd*@
+
+                <!-- #region OLD SAMPLE CODE -->
+                @*<div class="card filter-content">
+                        <div class="hide js-applied-filters">
+                            <div class="filter-header top">
+                                <button class="btn btn--tertiary-danger pull-right" data-ui="clear-filters">
+                                    <strong>
+                                        Clear all
+                                    </strong>
+                                </button>
+                                <h5>Applied filters</h5>
+                            </div>
+                            <div class="filter-content selected-filters"></div>
+                        </div>
+
+                        <form id="filters-form" accept-charset="UTF-8">
+                            <div data-ui="filter_by_jobs">
+                                <div class="filter-header top">
+                                    <div class="flag">
+                                        <div class="flag__section">
+                                            <h5>
+                                                Filter by job<span class="filter-header-secondary hide js-selection secondary-text">
+                                                    0 selected
+                                                </span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="filter-content filter-content-scrollable">
+                                    <ul>
+                                        <li data-value="444499">
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="talent_pool_filter_444499" name="talent_pools[]" type="checkbox" value="444499"><span class="flex-grow">Talent Pool</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li class="checkbox separator-top-s porcelain">
+                                            <div>
+                                                <label class="flex">
+                                                    <input class="filter-input" data-ui="select-all-job-options" data-type="active" type="checkbox" value="active"><strong class="flex-grow">My active jobs</strong>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="1428841">
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="active_filter_1428841" name="jobs[]" type="checkbox" value="1428841"><span class="flex-grow">Senior Software Engineer</span>
+                                                    <span class="ml-s"><span class="inline-block label label--inverse label--volcanic-ash" data-ui="filter-count">1</span></span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div data-ui="filter_by_stages">
+                                <div class="filter-header">
+                                    <div class="flag">
+                                        <div class="flag__section">
+                                            <h5>
+                                                Filter by stage<span class="filter-header-secondary hide js-selection secondary-text">
+                                                    0 selected
+                                                </span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="filter-content">
+                                    <ul>
+                                        <li data-value="2739908">
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739908" type="checkbox" value="2739908"><span class="flex-grow">Sourced</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="2739909">
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739909" type="checkbox" value="2739909"><span class="flex-grow">Applied</span>
+                                                    <span class="ml-s"><span class="inline-block label label--inverse label--volcanic-ash" data-ui="filter-count">1</span></span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="2739910">
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739910" type="checkbox" value="2739910"><span class="flex-grow">Phone Screen</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="2739911">
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739911" type="checkbox" value="2739911"><span class="flex-grow">Interview</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="2739912">
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739912" type="checkbox" value="2739912"><span class="flex-grow">Offer</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="2739913">
+                                            <div class="checkbox js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="stages_filter_2739913" type="checkbox" value="2739913"><span class="flex-grow">Hired</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div data-ui="filter_by_tags" class="hide">
+                                <div class="filter-header">
+                                    <div class="flag">
+                                        <div class="flag__section">
+                                            <h5>
+                                                Filter by tags<span class="filter-header-secondary hide js-selection secondary-text">
+                                                    0 selected
+                                                </span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="filter-content filter-content-scrollable">
+                                    <ul>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div data-ui="filter_by_qualification">
+                                <div class="filter-header">
+                                    <div class="flag">
+                                        <div class="flag__section">
+                                            <h5>Filter by consideration</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="filter-content" style="display: block;">
+                                    <ul>
+                                        <li data-value="all">
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="qualification_filter_all" name="qualification" type="radio" value="all"><span class="flex-grow">All</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="qualified">
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="qualification_filter_qualified" name="qualification" type="radio" value="qualified"><span class="flex-grow">Qualified</span>
+                                                    <span class="ml-s"><span class="inline-block label label--inverse label--volcanic-ash" data-ui="filter-count">1</span></span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="disqualified">
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="qualification_filter_disqualified" name="qualification" type="radio" value="disqualified"><span class="flex-grow">Disqualified</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div data-ui="filter_by_application_date">
+                                <div class="filter-header">
+                                    <div class="flag">
+                                        <div class="flag__section">
+                                            <h5>Filter by application date</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="filter-content">
+                                    <ul>
+                                        <li data-value="all">
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_all" type="radio" value="all"><span class="flex-grow">All</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="last_month">
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_month" type="radio" value="last_month"><span class="flex-grow">Last month</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="last_3_months">
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_3_months" type="radio" value="last_3_months"><span class="flex-grow">Last 3 months</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li data-value="last_year">
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_year" type="radio" value="last_year"><span class="flex-grow">Last year</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div>*@
+
+                <!-- #endregion -->
+            </div>
+
+            <div class="col-9 search-result-column">
+
+                <div class="row module-header">
+                    <h3 class="small">
+                        Matches
+                    </h3>
+                </div>
+
+                <div class="card">
+                    <div class="card-header d-inline-flex">
+                        <input type="search" class="form-control w-50" />
+                        <input type="number" class="form-control w-25 ml-1" placeholder="TEMP Corp ID" @bind-value="@BaseEntity.CorporateID" min="100">
+                        <button type="submit" class="btn btn-primary form-control float-end w-auto ml-1"> <span class="px-2">Search </span></button>
+
+                    </div>
+                    <div class="card-body">
+                        @for (int i = 0; i < MainEntityList.Count; i++)
+                        {     
+                            <div class="row py-2 mx-2 border-bottom hover-div">
+                                <a class="col-9 pl-2 text-decoration-none " href="#" >
+                                    <div class="d-flex">
+                                        <div>
+                                            <ProfileAvatarDisp CssClass="" AvatarType="AvatarType.Profile" 
+                                                ModuleID="101" ImageKey="@MainEntityList[i].JobCandidateID" PreviewImageDataUri="@MainEntityList[i].DynmcImageUrl" />
+                                        </div>
+                                        <div class="d-flex flex-column pl-3 pt-1">
+                                            <div class="d-flex flex-row">
+                                                <h5 class="text-theme-dark"> @MainEntityList[i].CandidateName</h5>
+                                            </div>
+                                            <span class="text-muted text-capitalize">
+                                                @MainEntityList[i].JobTitle • @MainEntityList[i].Stage
+                                            </span>
+                                            <div class="text-lowercase text-muted pt-1 medium">
+                                                <span>@MainEntityList[i].Email</span>
+                                                <span><a class="text-muted" href="tel:@MainEntityList[i].Mobile">@MainEntityList[i].Mobile</a></span>
+                                                <span class="text-muted pl-2">2 days ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="col-3 text-muted">
+                                    <label class="d-flex flex-column ml-2 mr-1">
+                                        <span class="flex-grow medium"> 50% </span>
+                                        <span class="flex-grow medium"> 2x </span>
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </EditForm>
+
+</div>
+
+
+<!-- #region Bootstrap sample -->
+@*<div id="accordion">
+        <div class="card">
+            <div class="card-header my-0 py-0 small font-weight-bold" id="headingOne">
+                <h5 class="mb-0 filter-content">
+                    <button class="btn btn-link w-100 float-start text-left rounded-0" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <i class="fa float-end" aria-hidden="true"></i>
+                        Collapsible Group Item #1
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body my-1">
+                    <div class="filter-content filter-content-scrollable">
+                        <ul>
+                            <li data-value="444499">
+                                <div class="checkbox js-filter-trigger ">
+                                    <label class="flex">
+                                        <input class="filter-input" id="talent_pool_filter_444499" name="talent_pools[]" type="checkbox" value="444499"><span class="flex-grow">Talent Pool</span>
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="checkbox separator-top-s porcelain">
+                                <div>
+                                    <label class="flex">
+                                        <input class="filter-input" data-ui="select-all-job-options" data-type="active" type="checkbox" value="active"><strong class="flex-grow">My active jobs</strong>
+                                    </label>
+                                </div>
+                            </li>
+                            <li data-value="1428841">
+                                <div class="checkbox js-filter-trigger ">
+                                    <label class="flex">
+                                        <input class="filter-input" id="active_filter_1428841" name="jobs[]" type="checkbox" value="1428841"><span class="flex-grow">Senior Software Engineer</span>
+                                        <span class="ml-s"><span class="inline-block label label--inverse label--volcanic-ash" data-ui="filter-count">1</span></span>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <i class="fa" aria-hidden="true"></i>
+                        Collapsible Group Item #2
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <i class="fa" aria-hidden="true"></i>
+                        Collapsible Group Item #3
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<!-- #endregion -->

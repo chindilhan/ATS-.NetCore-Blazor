@@ -1,0 +1,55 @@
+﻿@page "/Candidate/Create"
+@page "/Candidate/Import"
+@using System.IO
+@using Stx.HRM.Pages.Candidate
+@inherits ImportBase
+
+<div class="container">
+
+    <EditForm Model="@BaseEntity" OnValidSubmit="HandleValidSubmitAsync" OnInvalidSubmit="@HandleInvalidSubmitAsync" class="card px-5 py-3">
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <h5 class="py-2">Add a candidate to @JobTitle</h5>
+
+        <div class="form-group">
+            <label for="Title">Keyword</label>
+            <InputText @bind-Value="@BaseEntity.Address" placeholder="Title" id="Title" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Title">Job Title</label>
+            <InputText @bind-Value="@BaseEntity.Address" placeholder="Title" id="Title" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Status">Location</label>
+            <InputText @bind-Value="@BaseEntity.PreferredLocations" placeholder="Status" id="Status" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Status">Company</label>
+            <InputText @bind-Value="@BaseEntity.CurrCompanyName" placeholder="Status" id="Status" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Status">Education Institute</label>
+            <InputText @bind-Value="@BaseEntity.Email" placeholder="Status" id="Status" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="Status">Attach a Resume</label>
+            <div class="">
+                <div class="dropzone-container">
+                    <Stx.HRM.Components.FileSelector  />                
+                </div>    
+            </div>    
+        </div>
+
+        <div class="form-group ">
+            <label for="btnpanel">&nbsp;</label>
+            <div class="btn-toolbar" id="btnpanel">
+                <button class="btn btn-primary float-end col-auto mr-1 pl-3 " type="submit"><i class="fas fa-search"></i> &nbsp; Import &nbsp;</button>
+                <button class="btn btn-link" type="reset"><i class="fas fa-search"></i> Clear</button>
+            </div>
+        </div>
+
+    </EditForm>
+</div>

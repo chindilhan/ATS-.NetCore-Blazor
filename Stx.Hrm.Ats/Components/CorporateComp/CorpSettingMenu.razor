@@ -1,0 +1,117 @@
+﻿@using Stx.HRM.Components.CorporateComp
+@using Microsoft.AspNetCore
+@inherits CorpSettingMenuBase
+@inject NavigationManager NavManager
+
+
+    <div class="card card-filter-panel disabled">
+        <div class="flex">
+            <div class="card-body py-3">
+                <h5 class="card-title m-0">ABC Solution Pte Ltd</h5>
+            </div>
+            @*<ul class="list-inline mr-1">
+                    <li class="list-inline-item">
+                        <button type="submit" class="btn btn-link form-control small px-0"> Collapse</button>
+                    </li>
+                </ul>*@
+        </div>
+    </div>
+
+    <div id="accordion1">
+        <div class="card card-filter-panel">
+            <div class="card-header card-padding-1 filter-header filter-header-menu" id="headingOne">
+                <button class="btn btn-link w-100 float-start text-left rounded-0" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <i class="fa float-end" aria-hidden="true"></i>
+                    <span class="arrow-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapseH" id="collapseP" />
+                    Company
+                </button>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion1">
+                <div class="card-body card-padding-1">
+                    <div class="filter-content filter-content-scrollable pt-0">
+                        <ul>
+                            @foreach (var menu in @CompSettMenus)
+                            {
+                                <li>
+                                    <a class="dropdown-item pl-2 @(CurrentSelectedMenu== menu.ParmValue? "active" : "")" 
+                                        href="" @onclick="@(()=>MenuButtonClicked(menu.ParmValue))" @onclick:preventDefault>@menu.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="accordion2">
+        <div class="card card-filter-panel">
+            <div class="card-header card-padding-1 filter-header filter-header-menu" id="headingOne">
+                <button class="btn btn-link w-100 float-start text-left rounded-0" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa float-end" aria-hidden="true"></i>
+                    Recruiting
+                </button>
+            </div>
+
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion2">
+                <div class="card-body card-padding-1">
+                    <div class="filter-content pt-0">
+                        <ul>
+                            @foreach (var menu in @RecruitingMenus)
+                            {
+                                <li>
+                                    <a class="dropdown-item pl-2 @(CurrentSelectedMenu== menu.ParmValue? "active" : "")" 
+                                        href="" @onclick="@(()=>MenuButtonClicked(menu.ParmValue))" @onclick:preventDefault>@menu.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="accordion3">
+
+        <div class="card card-filter-panel">
+            <div class="card-header card-padding-1 filter-header filter-header-menu" id="heading3">
+                <button class="btn btn-link w-100 float-start text-left rounded-0" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                    <i class="fa float-end" aria-hidden="true"></i>
+                    User Profile
+                </button>
+            </div>
+            <div id="collapse3" class="collapse show" aria-labelledby="heading3" data-parent="#accordion3">
+                <div class="card-body card-padding-1">
+                    <div class="filter-content pt-0">
+                        <ul>
+                            @foreach (var menu in @UserProfileMenus)
+                            {
+                                <li>
+                                    <a class="dropdown-item pl-2 @(CurrentSelectedMenu== menu.ParmValue? "active" : "")" 
+                                        href="" @onclick="@(()=>MenuButtonClicked(menu.ParmValue))" @onclick:preventDefault>@menu.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+@*<script>
+    $(".btn-primary").click(function () {
+
+        if ($(this).data("closedAll")) {
+            $(".collapse").collapse("show");
+        }
+        else {
+            $(".collapse").collapse("hide");
+        }
+
+        // save last state
+        $(this).data("closedAll", !$(this).data("closedAll"));
+    });
+</script>*@

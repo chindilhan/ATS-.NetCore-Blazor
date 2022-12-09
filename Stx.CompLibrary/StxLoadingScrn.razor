@@ -1,0 +1,20 @@
+﻿@if (isLoaded)
+{
+    @ChildContent
+}
+else
+{
+    <div>Loading screen...</div>
+}
+
+@code {
+    bool isLoaded;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoaded = true;
+    }
+}

@@ -1,0 +1,95 @@
+﻿@using Stx.HRM.Components
+@using Stx.Shared.Extensions.Common
+
+<div class="d-flex">
+    <div class="acol-2">
+        <img src="@PreviewImageDataUri" alt="@AltText" 
+            class="avatar @AvatarStyle @CssClass"
+            onerror="this.onerror=null; this.src='assets/img/@AvatarDummyImage'; "> 
+    </div>
+</div>
+
+@code   {
+
+    private string _PreviewImageDataUri;
+    private int _ImageKey;
+
+    [Parameter] public AvatarType AvatarType { get; set; }
+    [Parameter] public string CssClass { get; set; }
+    [Parameter] public string AltText { get; set; }
+    [Parameter] public string ImageName { get; set; }
+    [Parameter] public int ModuleID { get; set; }
+    [Parameter]
+    public int ImageKey
+    {
+        get { return this._ImageKey; }
+        set
+        {
+            this._ImageKey = value;
+        }
+    }
+    [Parameter]
+    public string PreviewImageDataUri
+    {
+        get { return this._PreviewImageDataUri; }
+        set
+        {
+            this._PreviewImageDataUri = value;
+        }
+    }
+
+    public string AvatarStyle { get; set; }
+    public string AvatarDummyImage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await PrepareDataUri(false);
+        await PrepateAvatarStyle();
+    }
+
+    private async Task PrepateAvatarStyle()
+    {
+        if (AvatarType == AvatarType.Profile)
+        {
+            AvatarStyle = "avatar-profile";
+            AvatarDummyImage = "profile-avatar.svg";
+        }
+        else if (AvatarType == AvatarType.Profile_Small)
+        {
+            AvatarStyle = "avatar-profile-sm";
+            AvatarDummyImage = "profile-avatar.svg";
+        }
+        else if (AvatarType == AvatarType.Profile_tiny)
+        {
+            AvatarStyle = "avatar-profile-tiny";
+            AvatarDummyImage = "profile-avatar.svg";
+        }
+        else if (AvatarType == AvatarType.Logo)
+        {
+            AvatarStyle = "avatar-logo";
+            AvatarDummyImage = "logo-avatar.svg";
+        }
+        else if (AvatarType == AvatarType.Logo_Small)
+        {
+            AvatarStyle = "avatar-logo-sm";
+            AvatarDummyImage = "logo-avatar.svg";
+        }
+        else if (AvatarType == AvatarType.Logo_tiny)
+        {
+            AvatarStyle = "avatar-logo-tiny";
+            AvatarDummyImage = "logo-avatar.svg";
+        }
+
+        if (PreviewImageDataUri.IsEmpty())
+        {
+            PreviewImageDataUri = $"assets/img/{AvatarDummyImage}";
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task PrepareDataUri(bool isDataPreview)
+    {
+
+    }
+}

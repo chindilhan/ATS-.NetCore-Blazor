@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@*@using BlazorInputFile*@
+
+<p>
+    <InputFile OnChange="@OnInputFileChange" multiple />
+</p>
+
+@if (imageDataUrls.Count > 0)
+{
+    <h4>Images</h4>
+
+    <div class="card" style="width:30rem;">
+        <div class="card-body">
+            @foreach (var imageDataUrl in imageDataUrls)
+            {
+                <img class="rounded m-1" src="@imageDataUrl" />
+            }
+        </div>
+    </div>
+}
+
+@code {
+    IList<string> imageDataUrls = new List<string>();
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var maxAllowedFiles = 3;
+        var format = "image/png";
+
+        foreach (var imageFile in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            var resizedImageFile = await imageFile.RequestImageFileAsync(format, 
+                100, 100);
+            var buffer = new byte[resizedImageFile.Size];
+            await resizedImageFile.OpenReadStream().ReadAsync(buffer);
+            var imageDataUrl = 
+                $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+            imageDataUrls.Add(imageDataUrl);
+        }
+    }
+}
+
+@*
+@code { 
+    const string DefaultStatus = "Drop a text file here to view it, or click to choose a file";
+    const int MaxFileSize = 5 * 1024 * 1024; // 5MB
+    string status = DefaultStatus;
+
+    string fileName;
+    string fileTextContents;
+
+    async Task ViewFile(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+        if (file == null)
+        {
+            return;
+        }
+        else if (file.Size > MaxFileSize)
+        {
+            status = $"That's too big. Max size: {MaxFileSize} bytes.";
+        }
+        else
+        {
+            status = "Loading...";
+
+            using (var reader = new StreamReader(file.Data))
+            {
+                fileTextContents = await reader.ReadToEndAsync();
+                fileName = file.Name;
+            }
+
+            status = DefaultStatus;
+        }
+    } }
+*@

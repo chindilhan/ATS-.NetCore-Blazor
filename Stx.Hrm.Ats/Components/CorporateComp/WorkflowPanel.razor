@@ -1,0 +1,127 @@
+﻿@using Stx.HRM.Components.CorporateComp
+@inherits WorkflowPanelBase
+@using Radzen
+@using Stx.HRM.Core
+@using System.Text.Json
+@using System.Text.Json.Serialization
+
+<div class="w-100 m-2">
+
+   
+        <div class="row d-flex justify-content-between w-100">
+            <div class="float-start">
+                <h5>Workflow</h5>
+            </div>
+            <div class="float-end">
+                <button type="button" @onclick="@(()=> AddNewButtonClicked())" @onclick:preventDefault class="btn btn-primary btn-sm float-end "> Add new template </button>
+            </div>
+@*            <EditForm Model="@BaseEntry" OnValidSubmit="SubmitButtonClicked2" class="row w-100 pt-2">      
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="row">        
+                    <InputText @bind-Value="@BaseEntry.Name" class="form-control w-100" Placeholder="Template name" id="Template" />
+                    <ValidationMessage For=@(() => BaseEntry.Name) />
+                </div>
+                <br/>
+
+                <div class="row">        
+                    <InputText @bind-Value="@BaseEntry.Name" class="form-control w-100" Placeholder="Template name" id="Template" />
+                    <ValidationMessage For=@(() => BaseEntry.Name) />
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm float-end "> Saveddd </button>
+
+            </EditForm>
+
+                        
+            <EditForm Model="@BaseEntryList" OnValidSubmit="SubmitButtonClicked3" class="row w-100 pt-2">      
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                @foreach (var entry in BaseEntryList.OrderBy(x=> x.SeqNum))
+                    {
+                        var ccc = entry;
+                        <div class="row">   
+                            <InputText @bind-Value="@ccc.Name" class="form-control w-100" Placeholder="Template name" id="Template" />
+                            <ValidationMessage For=@(() => ccc.Name) />
+                        </div>
+                        <br/>
+                 }
+
+                <button type="submit" class="btn btn-primary btn-sm float-end "> Saveddd </button>
+            </EditForm>*@
+        </div>
+
+        @*<div class="row w-100 pt-2">*@
+            <EditForm Model="@BaseEntryList" OnValidSubmit="SubmitButtonClicked" class="w-100 pt-2">                
+                <DataAnnotationsValidator />
+
+               
+                <div class="list-group w-100">
+                    @foreach (var entry in BaseEntryList.OrderBy(x=> x.SeqNum))
+                    {
+                        int id = entry.ID;
+                        <div class="row d-flex list-group-item list-group-item-action bd-highlight py-1 pr-1">
+                            <div class="col-4 flex-fill p-2 bd-highlight">
+                                <InputText @bind-Value="@entry.Name" class="form-control w-100" Placeholder="Template name" id="Template" />
+                                <ValidationMessage For=@(() => @entry.Name) />
+                            </div>
+
+                            <div class="col-3 flex-fill flex-column p-2 bd-highlight">
+                                @if(!@entry.IsLocked)   
+                                {
+                                    <RadzenDropDown AllowClear="false" TValue="string" AllowFiltering="false" Placeholder="select a category..." id="StageCateg" class="form-control" 
+                                        Data="@StageCategoryList" @bind-Value="@entry.StageCategory" TextProperty="Text" ValueProperty="Value" />
+                                    <ValidationMessage For=@(() => @entry.StageCategory) />
+
+                                }
+                            </div>
+                            <div class="col-3 flex-fill flex-column my-auto p-2 bd-highlight">
+                                @if(!@entry.IsLocked)   
+                                {
+                                    <label class="flexs mr-2 mb-1">
+                                        <input class="" type="radio" name="@($"wf{id.ToString()}")" @bind="@entry.IsConfidential" id="@($"{id.ToString()}")"> &nbsp; <span class="flex-grow"> Confidential</span>
+                                    </label>
+                                }
+                            </div>
+                            <div class="col-2 flex-shrink-1 btn-group my-auto" role="group" aria-label="Actions">
+                                @if(!@entry.IsLocked)   
+                                {
+                                    <button type="button" @onclick="@(() => MoveEntry("up", @entry.ID, @entry.SeqNum))" @onclick:preventDefault class="btn btn-link btn-sm px-1" title="Up" >
+                                        <div class="icon">
+                                          <i class="bi bi-caret-up"></i>
+                                        </div>
+                                    </button>
+                                    <button type="button" @onclick="@(() => MoveEntry("down", @entry.ID, @entry.SeqNum))" @onclick:preventDefault class="btn btn-link btn-sm px-1" title="Down" >
+                                          <i class="bi bi-caret-down"></i>
+                                    </button>
+                                    <button type="button" @onclick="@(() => MoveEntry("delete", @entry.ID, @entry.SeqNum))" @onclick:preventDefault class="btn btn-link btn-sm px-1" title="Remove">
+                                        <i class="bi bi-x text-danger"></i>                                    
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <CustomValidator @ref="customValidator" />
+                <ValidationSummary/>
+
+                <div class="list-group w-100">
+                    <div class="col float-end pt-2">                        
+                        <button type="submit" class="btn btn-primary btn-sm float-end ml-2"> Save </button>
+                    </div>
+                </div>
+
+            </EditForm>
+
+
+        @*</div>*@
+    
+
+</div>
+
+
+
+

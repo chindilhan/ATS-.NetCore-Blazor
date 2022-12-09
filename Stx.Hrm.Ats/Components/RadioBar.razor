@@ -1,0 +1,112 @@
+﻿@inherits ComponentBase
+@namespace Stx.Shared.Common
+@using Stx.Shared.Extensions.Common;
+@typeparam TValue
+
+
+<div class="btn-group btn-group-toggle border overflow-hidden radio-bar" style="border-radius:50px; border-color:#B4B4BE!important;" data-bs-toggle="buttons">
+
+    @for (int i = 0; i < Entries.Count; i++)
+    {
+        int idx = i;
+        ParmStr entry = @Entries[idx];
+        bool isChked = SelectedValue.Compare(entry.Value) ? true : false;
+        string logs = $"DefaultValue:{SelectedValue} - Value:{entry.Value} Desc:{entry.Text}";
+        string activeCss = isChked ? "active" : "";
+        //string checkedCss = isChked ? "checked" : "";
+
+        <label class="btn btn-outline-primary small border-0 @LabelStyle @activeCss" style="border-radius:50px; ">
+            <input type="radio" name="@radioGroup" id="@idx" @onchange="((ChangeEventArgs e)=> SelectionValueChanged(entry.Value))" />
+            <span class="small">@Entries[idx].Text</span>
+        </label>
+    }
+
+</div>
+@*
+
+    <InputRadioGroup @onchange="((ChangeEventArgs e)=> SelectionValueChanged(entry.Value))" >
+        @for (int i = 0; i < Entries.Count; i++)
+        {
+            int idx = i;
+            ParmStr entry = @Entries[idx];
+            var val = entry.Value;
+            string desc = entry.Text;
+            bool isChked = DefaultValue.Compare(entry.Value) ? true : false;
+            string activeCss = isChked ? "active" : "";
+            string checkedCss = isChked ? "checked" : "";
+
+	        <InputRadio Value="val" /> @desc <br />
+         }
+   </InputRadioGroup>
+*@
+
+@code {
+    [Parameter] public string SelectedValue { get; set; }
+    [Parameter] public List<ParmStr> Entries { get; set; }
+    [Parameter] public string LabelStyle { get; set; }
+    //[Parameter] public TValue Selection { get; set; }
+    [Parameter] public EventCallback<TValue> SelectionChanged { get; set; }
+
+    string radioGroup = DateTime.UtcNow.TimeOfDay.ToString();
+    string xCurrentSelValue { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            //update the assigned default value to the model;
+            if (!string.IsNullOrWhiteSpace(SelectedValue))
+            {
+                SelectionValueChanged(SelectedValue);
+            }
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+
+    void SelectionValueChanged(string value)
+    {
+        SelectedValue = value;
+        if (typeof(TValue) == typeof(int))
+        {
+            if (int.TryParse(value, out var resultInt))
+            {
+                SelectionChanged.InvokeAsync((TValue)(object)resultInt);
+            }
+            else
+            {
+                //result = default;
+                SelectionChanged.InvokeAsync((TValue)(object)resultInt);
+                //ValidationFor = $"The selected value is not a valid number.";
+            }
+        }
+        else if (typeof(TValue) == typeof(short))
+        {
+            if (short.TryParse(value, out var resultInt))
+            {
+                SelectionChanged.InvokeAsync((TValue)(object)resultInt);
+            }
+            else
+            {
+                //result = default;
+                SelectionChanged.InvokeAsync((TValue)(object)resultInt);
+                //ValidationFor = $"The selected value is not a valid number.";
+            }
+        }
+        else if (typeof(TValue) == typeof(bool))
+        {
+            bool returnResultBool = Conv.TryBool(string.IsNullOrWhiteSpace(value) ? SelectedValue : value);
+            SelectionChanged.InvokeAsync((TValue)(object)returnResultBool);
+
+            //Entries.Where(x=> x.Value.Compare(value)).FirstOrDefault()
+
+            //StateHasChanged();
+        }
+        else if (typeof(TValue) == typeof(string))
+        {
+            SelectionChanged.InvokeAsync((TValue)(object)value);
+        }
+    }
+
+}

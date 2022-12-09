@@ -1,0 +1,74 @@
+﻿@inherits SchedulePanelBase
+
+
+<div class="w-100 m-2">
+    <EditForm Model="@CandSchedule">
+        <DataAnnotationsValidator />
+
+        <div class="row mt-3 w-100">
+            <div class="col">
+                <h6 class="my-2">Date</h6>
+                <div class="form-group my-2">
+                    <InputDate @bind-Value="@CandSchedule.DateFrom" class="form-control w-100" Placeholder="Select a date" id="thoughts" />
+                </div>
+            </div>
+            <div class="col">
+                <h6 class="my-2">Time</h6>
+                <div class="form-group my-2">
+                    <input type="time" Placeholder="Time from" id="timefrom" class="form-control w-25" />
+                    <input type="time" Placeholder="Time to" id="timeto" class="form-control w-25" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3 w-100">
+            <div class="col">
+                <h6 class="my-2">Time Zone</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@CandSchedule.TimeZone" class="form-control w-100" Placeholder="Select a time-zone" id="timezone" />
+                </div>
+            </div>
+            <div class="col">
+                <h6 class="my-2">Location</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@CandSchedule.Location" class="form-control w-100" Placeholder="Select a location" id="location" />
+                    <ValidationMessage For=@(() => CandSchedule.Location) />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3 w-100">
+            <div class="col">
+                <h6 class="my-2">Attendees</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@CandSchedule.Atendee" class="form-control w-100" Placeholder="Add an attendee" id="attendee" />
+                </div>
+            </div>
+        </div>
+        <div class="row form-group mt-3 w-100">
+            <div class="col">
+                <h6 class="my-2">Event Title</h6>
+                <div class="form-group my-2">
+                    <InputText @bind-Value="@CandSchedule.Title" class="form-control w-100" Placeholder="Select a location" id="location" />
+                    <ValidationMessage For=@(() => CandSchedule.Title) />
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3 w-100">
+            <div class="col">
+                <h6 class="my-2">Event Description</h6>
+                <div class="form-group my-2">
+                    <Radzen.Blazor.RadzenTextArea @bind-Value="@CandSchedule.Desctiption" Placeholder="Add event details"
+                                                  Rows="5" id="thoughts" class="form-control w-100" />
+                    <ValidationMessage For=@(() => CandSchedule.Desctiption) />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group float-end my-2">
+            <button type="submit" @onclick="@(()=> SubmitButtonClicked())" class="btn btn-primary float-end "> Submit </button>
+            <button type="submit" @onclick="@(()=> CloseButtonClicked())" class="btn btn-link float-end ">Close</button>
+        </div>
+
+    </EditForm>
+</div>

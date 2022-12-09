@@ -1,0 +1,23 @@
+﻿@page "/Screening/Evaluate"
+@using Stx.HRM.Pages.Screening
+@*@page "/Screening/Evaluate/{csrc}/{job}/{id}"*@
+@inherits EvaluateBase
+@*src=@MainEntityList[i].CandidateSource&job=@MainEntityList[i].JobOrderID&id=@MainEntityList[i].CandidateID&corp=1">@MainEntityList[i].FirstName*@
+<h3>Evaluate</h3>
+
+<div class="container container-body">
+    <div class="card">
+        <div class="card-header">
+            @BaseEntity.FirstName @BaseEntity.LastName
+            @BaseEntity.DateOfBirth | @BaseEntity.Gender | @BaseEntity.Nationality @*| @BaseEntity.Country*@
+        </div>
+        <div class="card-header">
+
+        </div>
+        <div class="card-header">
+        </div>
+    </div>
+</div>
+
+
+

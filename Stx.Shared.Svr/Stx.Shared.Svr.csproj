@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+	  <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+</Project>

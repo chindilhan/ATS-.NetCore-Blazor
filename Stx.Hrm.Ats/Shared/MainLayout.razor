@@ -1,0 +1,32 @@
+﻿@using Stx.CompLibrary.Common
+@using System.Text.Json
+@using  Stx.Shared.Common
+@inherits StxLayoutComponentBase
+@implements Stx.Shared.Interfaces.IAlertMsgService
+
+<div class="main ">
+    <TopMenu />
+    @*<div class="containerd">*@
+
+    @if (PageAlert.IsActiveMsg)
+    {
+        <StxAlertMsg AlertMessage="@PageAlert" CloseButtonClickEventCallback="CloseAlertButtonClicked" />
+        //_PageAlert = new AlertMsg();
+    }
+
+    <CascadingValue Value="this" Name="AlertService">
+        @Body
+    </CascadingValue>
+
+    <RadzenDialog />
+    <div class="" style="display: block;background-color: #eee;">
+        <RadzenNotification />
+    </div>
+
+    @if (IsPageLoading)
+    {
+        <div id="overlay">
+            <h1 id="overlay-text" style="font-size:50px; color:red;">Loading...</h1>
+        </div>
+    }
+</div>

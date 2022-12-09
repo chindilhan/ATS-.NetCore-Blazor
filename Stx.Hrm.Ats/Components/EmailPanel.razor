@@ -1,0 +1,31 @@
+﻿@inherits EmailPanelBase
+
+<div class="w-100 m-2">
+    <h5 class="my-2">Send an Email</h5>
+    <EditForm Model="@Email">
+
+        <div class="form-group">
+            <h6 for="Title" class="mt-1 mb-1">To:</h6>
+            <label id="Title" class=""> @Email.Recipients dddd</label>
+        </div>
+        <div class="form-group my-1">
+            <h6 for="template" class="mt-1 mb-2">Template</h6>
+            <Radzen.Blazor.RadzenDropDown @bind-Value="@Email.Title" Placeholder="Select the message template" id="template" class="form-control w-100" />
+        </div>
+        <div class="form-group">
+            <h6 for="Title" class="mt-1 mb-1">Title</h6>
+            <InputText @bind-Value="@Email.Title" placeholder="Title" id="Title" class="form-control w-100" autocomplete="false" />
+        </div>
+        <div class="form-group my-2">
+            <h6 for="body" class="mt-1 mb-1">Message</h6>
+            <Radzen.Blazor.RadzenTextArea @bind-Value="@Email.Body" Placeholder="Add your message here." id="body" 
+                                          Rows="4" class="form-control w-100" />
+        </div>
+        <div class="form-group float-end my-2">
+            <button type="submit" @onclick="@(()=> SubmitButtonClicked())" class="btn btn-primary float-end ">Send</button>
+            <button type="submit" @onclick="@(()=> CloseButtonClicked())" class="btn btn-link float-end ">Close</button>
+        </div>
+
+    </EditForm>
+</div>
+

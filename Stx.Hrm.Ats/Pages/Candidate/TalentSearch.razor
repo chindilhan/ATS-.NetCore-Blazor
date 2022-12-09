@@ -1,0 +1,431 @@
+﻿@page "/Talent/Search"
+@page "/Candidate/TalentSearch"
+@using Stx.HRM.Components
+@using Stx.Shared.Extensions.Common;
+@using Stx.HRM.Pages.Candidate
+@inherits TalentSearchBase
+
+
+
+<div class="container">
+
+    <EditForm Model="@BaseEntity" OnValidSubmit="HandleValidSubmitAsync" OnInvalidSubmit="@HandleInvalidSubmitAsync">
+
+
+        <div class="row">
+            <div class="col-3 filter-column pb-2">
+
+                <div class="card card-filter-panel disabled">
+                    <div class="flex">
+                        <div class="card-body py-2">
+                            <h5 class="card-title m-0">Filters</h5>
+                        </div>
+                        <ul class="list-inline mr-1">
+                            <li class="list-inline-item">
+                                <button type="submit" class="btn btn-link form-control small px-0"> Clear </button>
+                            </li>
+                            <li class="list-inline-item">
+                                <button type="submit" class="btn btn-link form-control small px-0"> Collapse</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="accordion1">
+                    <div class="card card-filter-panel">
+                        <div class="card-header card-padding-1 filter-header" id="headingOne">
+                            <button class="btn btn-link w-100 float-start text-left rounded-0" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <i class="fa float-end" aria-hidden="true"></i>
+                                <span class="arrow-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapseH" id="collapseP" />
+                                General
+                            </button>
+                        </div>
+
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion1">
+                            <div class="card-body card-padding-1">
+                                <div class="filter-content filter-content-scrollable">
+                                    <ul>
+                                        <li>
+                                            <div class="form-group mb-1">
+                                                <label for="Title">Location</label>
+                                                <InputText @bind-Value="@BaseEntity.Keyword" placeholder="Title" id="Title" class="form-control medium" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group mb-1">
+                                                <label for="Title">Schools</label>
+                                                <InputText @bind-Value="@BaseEntity.Keyword" placeholder="Title" id="Title" class="form-control medium" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="accordion2">
+                    <div class="card card-filter-panel">
+                        <div class="card-header card-padding-1  filter-header" id="headingOne">
+                            <button class="btn btn-link w-100 float-start text-left rounded-0" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                <i class="fa float-end" aria-hidden="true"></i>
+                                Employment
+                            </button>
+                        </div>
+
+                        <div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion2">
+                            <div class="card-body card-padding-1">
+                                <div class="filter-content">
+                                    <ul>
+                                        <li>
+                                            <div class="form-group mb-1">
+                                                <label for="Title">Industries</label>
+                                                <InputText @bind-Value="@BaseEntity.Keyword" placeholder="Title" id="Title" class="form-control medium" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group mb-1">
+                                                <label for="Title">Skills</label>
+                                                <InputText @bind-Value="@BaseEntity.Keyword" placeholder="Title" id="Title" class="form-control medium" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group mb-1">
+                                                <label for="Title">Companies</label>
+                                                <InputText @bind-Value="@BaseEntity.Keyword" placeholder="Title" id="Title" class="form-control medium" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group mb-1">
+                                                <label for="Title">Min Experiense (Yrs)</label>
+                                                <InputText @bind-Value="@BaseEntity.Keyword" placeholder="Title" id="Title" class="form-control medium" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group mb-1">
+                                                <label for="ExpectedSalary">Expected Salary</label>
+                                                <InputText @bind-Value="@BaseEntity.CandidateSource" placeholder="Expected Salary" id="ExpectedSalary" class="form-control medium" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group mb-1">
+                                                <label for="EmploymentType">Employment Type</label>
+                                                <InputText @bind-Value="@BaseEntity.Keyword" placeholder="May be open to these employment types" id="EmploymentType" class="form-control medium" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group mb-1">
+                                                <label for="CareerLevel">Career Level</label>
+                                                <InputText @bind-Value="@BaseEntity.Keyword" placeholder="Career Level" id="CareerLevel" class="form-control medium" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="accordionAvil">
+                    <div class="card card-filter-panel">
+                        <div class="card-header card-padding-1 filter-header" id="headingAvil">
+                            <button class="btn btn-link " data-bs-toggle="collapse" data-bs-target="#collapseAvil" aria-expanded="false" aria-controls="collapseAvil">
+                                <i class="fa" aria-hidden="true"></i>
+                                Availablity
+                            </button>
+                        </div>
+                        <div id="collapseAvil" class="collapse " aria-labelledby="headingAvil" data-parent="#accordionAvil">
+                            <div class="card-body card-padding-1">
+                                <div class="filter-content">
+                                    <ul>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_all" type="radio" value="all"><span class="flex-grow">All</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_month" type="radio" value="last_month"><span class="flex-grow">Actively looking</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_month" type="radio" value="last_month"><span class="flex-grow">Considarable</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_month" type="radio" value="last_month"><span class="flex-grow">Not Interested</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="accordion3">
+                    <div class="card card-filter-panel">
+                        <div class="card-header card-padding-1 filter-header" id="heading3">
+                            <button class="btn btn-link " data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                <i class="fa" aria-hidden="true"></i>
+                                Profile Freshnes
+                            </button>
+                        </div>
+                        <div id="collapse3" class="collapse " aria-labelledby="heading3" data-parent="#accordion3">
+                            <div class="card-body card-padding-1">
+                                <div class="filter-content">
+                                    <ul>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_all" type="radio" value="all"><span class="flex-grow">All</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_month" type="radio" value="last_month"><span class="flex-grow">Within last week</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_month" type="radio" value="last_month"><span class="flex-grow">Within last month</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_month" type="radio" value="last_month"><span class="flex-grow">Within last 3 months</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_month" type="radio" value="last_month"><span class="flex-grow">Within last 6 months</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="radio js-filter-trigger ">
+                                                <label class="flex">
+                                                    <input class="filter-input" id="application_date_filter_last_3_months" type="radio" value="last_3_months"><span class="flex-grow">Older than 6 months</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="accordionDisp">
+                    <div class="card card-filter-panel">
+                        <div class="card-header card-padding-1  filter-header" id="headingDisp">
+                            <button class="btn btn-link " data-bs-toggle="collapse" data-bs-target="#collapseDisp" aria-expanded="false" aria-controls="collapseDisp">
+                                <i class="fa" aria-hidden="true"></i>
+                                Disply profiles that have
+                            </button>
+                        </div>
+                        <div id="collapseDisp" class="collapse" aria-labelledby="headingDisp" data-parent="#accordionDisp">
+                            <div class="card-body card-padding-1">
+                                <div class="filter-content">
+                                    <ul>
+                                        @{
+                                            List<Tuple<string, string>> DispList = new List<Tuple<string, string>>();
+                                            DispList.Add(Tuple.Create("MobileConfirmed", "Mobile Confirmation"));
+                                            DispList.Add(Tuple.Create("ContactConfirmed", "Contact Information"));
+                                            DispList.Add(Tuple.Create("Photo", "Photo"));
+                                            DispList.Add(Tuple.Create("Experience", "Experience"));
+                                            DispList.Add(Tuple.Create("Skills", "Skills"));
+                                            DispList.Add(Tuple.Create("Education", "Education"));
+                                            DispList.Add(Tuple.Create("Specialties", "Specialties"));
+                                            DispList.Add(Tuple.Create("Memberships", "Memberships"));
+                                            DispList.Add(Tuple.Create("Languages", "Languages"));
+                                            DispList.Add(Tuple.Create("CV", "CV Attached"));
+                                            DispList.Add(Tuple.Create("CVVideo", "Video CV Added"));
+                                            DispList.Add(Tuple.Create("Languages", "Personal Information"));
+                                            DispList.Add(Tuple.Create("Certificate", "Training and Certifications"));
+
+                                        }
+                                        @foreach (var item in DispList)
+                                        {
+                                            <li>
+                                                <div class="checkbox">
+                                                    <label class="flex">
+                                                        <input class="filter-input" type="checkbox" value="@item.Item1"><span class="flex-grow">@item.Item2</span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            @*RIGHT PANEL FOR RESULTS*@
+            <div class="col-9 search-result-column">
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row mt-2">
+                            <div class="form-group col-md-6">
+                                <input type="search" class="form-control w-100" @bind-value="@BaseEntity.Keyword" placeholder="Search with keywords, tags, job title" />
+                            </div>
+                            <div class="form-group col-md-2">
+                                <button type="submit" class="form-control btn btn-primary mx-1"> Search </button>
+                            </div>
+                            <div class="form-group col-md-4 pl-2">
+                                <div class="d-flex flex-row">
+                                    <div class="bd-highlight mx-1">
+                                        <button type="submit" class="btn btn-link form-control small px-0"> Save Search </button>
+                                    </div>
+                                    <div class="bd-highlight mx-1">
+                                        <button type="submit" class="btn btn-link form-control small px-0"> Clear Search </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        @for (int i = 0; i < MainEntityList.Count; i++)
+                        {
+                            <div class="row py-2 mx-2 border-bottom hover-div hover-div-show" id="hover-div-popup-trigger">
+                                <div class="col-9 pl-2">
+
+                                    <div class="row pb-1">
+                                        <div class="col-3 d-flex justify-content-end">
+                                            <ProfileAvatarDisp CssClass="" AvatarType="AvatarType.Profile"
+                                                ModuleID="101" PreviewImageDataUri="@MainEntityList[i].DynmcImageUrl" />
+                                        </div>
+                                        <div class="col-9 d-flex flex-column pl-3 pt-1">
+                                            <div class="d-flex flex-row">
+                                                <h4 class="text-theme-black"> @MainEntityList[i].FirstName [Last name hidden]</h4>
+                                            </div>
+                                            <div class="text-muted text-capitalize h6">
+                                                @MainEntityList[i].CurrentJob
+                                            </div>
+                                            <div class="text-muted text-capitalize h6 medium pt-1">
+                                                @MainEntityList[i].CountryName • @MainEntityList[i].City
+                                            </div>
+                                            <div class="text-capitalize text-muted pt-1 small">
+                                                <span class="talentpool-bio-label">Age:</span> @MainEntityList[i].DateOfBirth.AgeYearsNullable()
+                                                <span class="talentpool-bio-label pl-3">Gender:</span> @MainEntityList[i].Gender
+                                                <span class="talentpool-bio-label pl-3">Residence:</span> @MainEntityList[i].Address
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if (!string.IsNullOrWhiteSpace(@MainEntityList[i].CurrentJob))
+                                    {
+                                        <div class="row medium pb-1">
+                                            <div class="col-3 talentpool-label">
+                                                Current job title
+                                            </div>
+                                            <div class="col-9">
+                                                <span class="text-capitalize talentpool-data pt-1"> @MainEntityList[i].CurrentJob</span>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(@MainEntityList[i].Education))
+                                    {
+                                        <div class="row medium pb-1">
+                                            <div class="col-3 talentpool-label">
+                                                Education
+                                            </div>
+                                            <div class="col-9">
+                                                <span class="text-capitalize talentpool-data pt-1"> @MainEntityList[i].Education</span>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(@MainEntityList[i].ExpectedJobs))
+                                    {
+                                        <div class="row medium pb-1">
+                                            <div class="col-3 talentpool-label">
+                                                Expected job
+                                            </div>
+                                            <div class="col-9">
+                                                <span class="text-capitalize talentpool-data pt-1"> @MainEntityList[i].ExpectedJobs</span>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (@MainEntityList[i].ExpectedSalary != null)
+                                    {
+                                        <div class="row medium pb-1">
+                                            <div class="col-3 talentpool-label">
+                                                Expected salary
+                                            </div>
+                                            <div class="col-9">
+                                                <span class="text-capitalize talentpool-data pt-1"> @MainEntityList[i].ExpectedSalary.GetValueOrDefault().ToString("#,##0")</span>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(@MainEntityList[i].SummaryDesc))
+                                    {
+                                        <div class="row medium pb-1">
+                                            <div class="col-3 talentpool-label">
+                                                @*Profile Summary:*@
+                                            </div>
+                                            <div class="col-9">
+                                                @MainEntityList[i].SummaryDesc
+                                            </div>
+                                        </div>
+                                    }
+                                    @*<div class="row medium pb-1">
+                                            <div class="col-3 talentpool-label">
+                                                Total Experience
+                                            </div>
+                                            <div class="col-9">
+                                                <span class="text-capitalize talentpool-data pt-1"> @MainEntityList[i].TotalExperience</span>
+                                            </div>
+                                        </div>*@
+
+                                </div>
+                                <div class="col-3">
+                                    <div class="d-flex flex-column ml-2 mr-1 w-100 text-muted medium">
+                                        <button class="btn btn-outline-info btn-sm mb-1"> Save to List</button>
+                                        <button class="btn btn-outline-info btn-sm mb-1"> Add to Talent-Pool </button>
+                                    </div>
+                                    <div id="hover-div-popup">
+                                        <div class="d-flex flex-column ml-2 mr-1 text-muted medium">
+                                            <a href="#" class="py-1"> Add to a Project</a>
+                                            <a href="#" class="py-1"> Mark as Hired </a>
+                                            <a href="#" class="py-1"> Copy to... </a>
+                                            <a href="#" class="py-1"> Invite </a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </EditForm>
+
+</div>

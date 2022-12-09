@@ -1,0 +1,266 @@
+﻿@using Stx.HRM.Components.Job
+@using Stx.Shared
+@using Stx.Shared.Common
+@using Stx.Shared.Extensions.Common;
+@inherits JobReviewQuestionsBase
+
+<div class="w-100 m-2">
+
+    <EditForm Model="@ReviewQuestions" class="w-100">
+        <DataAnnotationsValidator />
+
+        @*Auto Screening Questions*@
+        <div class="row">
+            <div class="d-flex justify-content-between mt-2 pb-2 w-100 ">
+                <div class="flex-grow-1 my-auto">
+                    <h5 class="">Auto Screening Criteria</h5>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group my-0 me-1">
+                        <InputSelect @bind-Value="@AutoScreeningFieldType" class="form-select form-select-sm">
+                            <option value="">Select...</option>
+                            <option value="none">None</option>
+                            <option value="edu_level">Education types</option>
+                            <option value="exp_years">Experience years</option>
+                        </InputSelect>
+                        <ValidationMessage For=@(() => AutoScreeningFieldType) />
+
+                        @*<RadzenDropDown TValue="string" Data="@AnswerTypeList" @bind-Value="@BaseEntity.AnswerType" TextProperty="Text" ValueProperty="Value"
+                                Placeholder="Select..." id="fieldType" class="form-select form-select-sm" />
+                            <ValidationMessage For=@(() => BaseEntity.AnswerType) />*@
+                    </div>
+                    <button @onclick="@(()=> AddNewButtonClicked("system"))" class="btn btn-outline-primary btn-sm float-end">Add new question</button>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var entry in @ReviewQuestions.Where(x => x.IsAutoEvaluate))
+        {
+            string reqStringVal = "R";
+            string optStringVal = "O";
+            string radioGrp = $"evtype{@entry.ID}";
+
+            <div class="row align-items-center pt-2 pb-2 border-bottom border-light">
+                <div class="col-4">
+                    <InputText @bind-Value="@entry.Desc" class="form-control form-control-sm border-0 my-1 me-2" Placeholder="Question or prompt" id="@($"desc{@entry.ID}")" />
+                </div>
+                <div class="col-3 pe-3">
+                    @if (entry.FieldType == "edu_level")
+                    {
+                        <div class="d-flex flex-row border-bottom ">
+                            @*<label class="my-1 me-2 col-auto" for="">Ideal Answer</label>*@
+                            <InputSelect @bind-Value="entry.RequiredAnswer" class="form-select form-select-sm border-0" Placeholder="Min education level">
+                                <option value="">Any education level</option>
+                                <option value="Exploration">Diploma</option>
+                                <option value="Diplomacy">Degree</option>
+                                <option value="Defense">Master</option>
+                            </InputSelect>
+                        </div>
+                    }
+                    else if (entry.FieldType == "exp_years")
+                    {
+                        <div class="d-flex flex-row border-bottom ">
+                            @*<label class="my-1 me-2 col-auto" for="">Ideal Answer</label>*@
+                            <InputSelect @bind-Value="entry.RequiredAnswer" class="form-select form-select-sm border-0" Placeholder="Min experience (years)">
+                                <option value="">Any experience level</option>
+                                @for (int i = 1; i < 17; i++)
+                                        {
+                                    <option value="@i">@i</option>
+                                        }
+                            </InputSelect>
+                        </div>
+                    }
+                    @*                      else if(entry.FieldType=="job_industry")
+                        {
+                            <div class="d-flex flex-row border-bottom ">
+                                <InputSelect @bind-Value="entry.RequiredAnswer" class="form-select form-select-sm border-0" Placeholder="Min experience (years)">
+                                <option value="">Any experience level</option>
+                                @for (int i = 1; i < 17; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                                </InputSelect>
+                            </div>
+                        }*@
+                    else if (entry.EvaluateCriteria == "min")
+                    {
+                        <div class="d-flex flex-row border-bottom ">
+                            @*<label class="my-1 me-2 col-auto" for="">Ideal Answer</label>*@
+                            <InputText @bind-Value="@entry.RequiredAnswer" class="form-control form-control-sm border-0" Placeholder="Minimum value" id="minvalue" />
+                        </div>
+                    }
+                </div>
+                <div class="col-auto form-check form-check-inline align-top">
+                    @*<input class="filter-input" type="radio" value="R" @onchange="@(x => {if((bool)x.Value) {@entry.QualifyType = "R";}})">
+                        <label class="form-check-label" for="inlineRadio1">Required</label>*@
+                    <RadioBar TValue="string" 
+                        SelectedValue="@(entry.EvaluateType)" 
+                        SelectionChanged="@(item => @entry.EvaluateType = item)"
+                        LabelStyle="py-0"
+                        Entries="@(new List<ParmStr>(new[] { new ParmStr("R", "Required"), new ParmStr("O", "Optional"), new ParmStr("I", "Off") }))" />
+
+                    @*<InputRadioGroup Name="@radioGrp" @bind-Value="@entry.EvaluateType" TValue="string">
+                            <InputRadio id="@($"Req{radioGrp}")" Name="@radioGrp" TValue="string" Value="reqStringVal" class="mx-2"/> <label class="me-3" for="@($"Req{radioGrp}")">Required</label>
+                            <InputRadio id="@($"Opt{radioGrp}")" Name="@radioGrp" TValue="string" Value="optStringVal" class="mx-2"/> <label class="me-0" for="@($"Opt{radioGrp}")">Optional</label>
+                        </InputRadioGroup>*@
+                </div>
+                <div class="position-absolute bottom-0 end-0" >
+                    <label class="small text-light">@FieldTypeList.Where(x => x.Value == @entry.FieldType).Select(x => x.Text).FirstOrDefault()</label>
+                </div>
+
+            </div>
+        }
+
+
+        @*Custom Screening Questions*@
+        <div class="row">
+            <div class="d-flex justify-content-between w-100 mt-5">
+                <div class="flex-grow-1 my-auto">
+                    <h5 class="">Custom Screening Questions</h5>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group my-2 me-1">
+                        <InputSelect @bind-Value="@CustomScreeningFieldType" class="form-select form-select-sm">
+                            <option value="">Select...</option>
+                            @foreach (var opt in FieldTypeList)
+                            {
+                                <option value="@opt.Value">@opt.Text</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For=@(() => CustomScreeningFieldType) />
+                    </div>
+                    <button @onclick="@(()=> AddNewButtonClicked("custom"))" class="btn btn-outline-primary btn-sm float-end"> Add new question</button>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var entry in @ReviewQuestions.Where(x => !x.IsAutoEvaluate))
+        {
+            bool isRdoOptnsNeed = false;
+            string radioGrp = $"custQues{@entry.ID}";
+
+            <div class="d-flex border rounded-sm mb-2" style="border-color: #c4cfde!important;">
+                <div class="flex-grow-1 ps-3">
+                    <div class="d-flex flex-row ">
+                        <div class="flex-grow-1 py-2 mb-2 me-5">
+                            <div class="row d-flex flex-column ">
+                                <div class="border-bottom ">
+                                    <InputText @bind-Value="@entry.Desc" class="form-control form-control-sm border-0 ps-0" Placeholder="Question or prompt" id="description" />
+                                </div>
+                                <div class="form-inline pt-2">
+                                    @if (entry.FieldType == "yn")
+                                    {
+                                        isRdoOptnsNeed = true;
+                                        <label class="me-2 mt-1 pt-2 align-self-start" for="expAns1">Expected Answer</label>
+                                        <div class="border-bottom my-1 me-sm-2 " id="expAns1">
+                                            <InputSelect @bind-Value="@entry.RequiredAnswer" class="form-select form-select-sm border-0 ">
+                                                <option value="">Select...</option>
+                                                <option value="Y">Yes</option>
+                                                <option value="N">No</option>
+                                            </InputSelect>
+                                        </div>
+                                    }
+                                    else if (entry.FieldType.InIgnoreCase("list", "mcsa", "mcma"))
+                                    {
+                                        isRdoOptnsNeed = true;
+                                        <label class="me-2 mt-1 pt-2 align-self-start" for="">Choices</label>
+
+                                        <div class="d-flex flex-column my-1 me-sm-2 ">
+                                            @foreach (var lst in @entry.FieldSrcDataList)
+                                            {
+                                                <div class="flex-row">
+                                                    <InputText @bind-Value="@lst.Value" class="form-control form-control-sm" Placeholder="add choice" id="list"
+                                                               @onblur="@(()=> @entry.UpdateListItemData())" />
+
+                                                    <button @onclick="@(()=> {if(@entry.FieldSrcDataList.Count > 1) @entry.FieldSrcDataList.Remove(lst); })" class="btn btn-link btn-sm text-danger px-0 pe-1">
+                                                        <div class="d-flex">
+                                                            <i class="bi bi-x-circle font-icon-md mb-1"></i>
+                                                        </div>
+                                                    </button>
+                                                    @if (entry.FieldSrcDataList != null && @entry.FieldSrcDataList.Last() == lst)
+                                                    {
+                                                        <button @onclick="@(()=> @entry.FieldSrcDataList.Add(new ComboStr()))" class="btn btn-link btn-sm px-0 pe-1">
+                                                            <div class="d-flex">
+                                                                <i class="bi bi-plus-circle font-icon-md mb-1"></i>
+                                                            </div>
+                                                        </button>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <label class="me-2 mt-1 pt-2 align-self-start" for="expAns2">Expected Answer</label>
+                                        <div class="border-bottom align-self-start my-1 me-sm-2 " id="expAns2">
+                                            <InputSelect @bind-Value="@entry.RequiredAnswer" class="form-select form-select-sm border-0" @onfocus="@(()=> @entry.UpdateFieldSrcData())">
+                                                <option value="">Select...</option>
+                                                @foreach (var lst in @entry.FieldSrcDataList)
+                                                        {
+                                                    <option value="@lst.Value">@lst.Value</option>
+                                                        }
+                                            </InputSelect>
+                                        </div>
+                                    }
+                                    else if (entry.FieldType == "short_ans")
+                                    {
+                                        isRdoOptnsNeed = true;
+                                        <label class="me-2 mt-1 pt-2 align-self-start" for="expAns3">Expected Answer</label>
+                                        <div class="border-bottom my-1 me-sm-2 " id="expAns3">
+                                            <InputText @bind-Value="@entry.RequiredAnswer" class="form-control form-control-sm border-0" Placeholder="Answer" id="freeques" />
+                                        </div>
+                                    }
+                                    else if (entry.FieldType == "paragraph")
+                                    {
+                                        <label class="me-2 mt-1 -2 align-self-start" for="expAns4">Expected Answer</label>
+                                        <div class="border-bottom my-1 me-sm-2 " id="expAns4">
+                                            <label class="my-1 me-2" for=""> @("<N/A>")</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-checkd align-top me-1 ps-1 position-relative">
+                    <div class="form-group float-end mt-n2 mb-0 pt-2">
+                        <button type="submit" @onclick="@(() => DeleteReviewQuestion(entry))" class="btn btn-link float-end "> X </button>
+                    </div>
+                    @if (isRdoOptnsNeed)
+                    {
+                        <div class="pt-2">
+                            <RadioBar TValue="string" LabelStyle="py-0"
+                                SelectedValue="@(entry.EvaluateType)" 
+                                SelectionChanged="@(item => @entry.EvaluateType = item)"
+                                Entries="@(new List<ParmStr>(new[] { new ParmStr("R", "Required"), new ParmStr("O", "Optional") }))" />
+                        </div>
+                    }
+                    <div class="position-absolute bottom-0 end-0" >
+                        <label class="small text-light">@FieldTypeList.Where(x => x.Value == @entry.FieldType).Select(x => x.Text).FirstOrDefault()</label>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    </EditForm>
+
+    <div class="row mt-5 pt-2">
+        <div class="form-group w-100 ">
+            <div class="w-100 pb-1">
+                <InputCheckbox @bind-Value="IsAutoRejectApplicant" id="chkAutoRej" disabled="@IsAutoRejectDisabled" />
+                <label class="font-weight-bold ps-1" for="chkAutoRej">Auto rate as 'non-qualified' & inform the candidate via email.</label>
+            </div>
+            <label class="medium text-muted ps-2">Candidates will be marked as non-qualified if they don't meet any of the required questions. </label>
+            <label class="medium text-muted pb-2 ps-2">Applicant will receive the rejection email 3 days after they apply. You may change applicant's rating before the message is sent.</label>
+            <div class="px-2 ">
+                <RadzenTextArea @bind-Value="@AutoRejectMailTemplate" 
+                    placeholder="Rejection email" id="description" class="form-control" Rows="7" Visible="@(!IsAutoRejectDisabled)">
+                </RadzenTextArea>
+                <ValidationMessage For=@(() => BaseEntity.Desc) />
+            </div>
+        </div>
+    </div>
+
+</div>
+

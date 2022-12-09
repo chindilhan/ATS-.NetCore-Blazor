@@ -1,0 +1,189 @@
+﻿@using BlazorInputFile
+@using System.IO
+
+<div class="d-flex flex-column h-100">
+
+    @if (!string.IsNullOrWhiteSpace(PreviewImageDataUri))
+    {
+        <div class="media text-center ml-2 mt-2">
+            <img src="@PreviewImageDataUri" alt="Preview" class="img-fluid" style="max-height:200px;">
+            <button type="button" class="btn-close pl-2 pt-1" aria-label="Close" @onclick="@(e => ClearFiles())">
+            </button>
+        </div>
+    }
+    else if (!string.IsNullOrWhiteSpace(ImageSrc))
+    {
+        <div class="media text-center ml-2 mt-2">
+            <img src="@ImageSrc" alt="Trademark image" class="img-fluid" style="max-height:200px;">
+            <button type="button" class="btn-close pl-2 pt-1" aria-label="Close" @onclick="@(e => ClearFiles())">
+            </button>
+        </div>
+    }
+
+    <div class="flex-grow-1 dropzone @dropClass" style="min-height:30px">
+        <InputFile id="fileInput" title=""
+                   OnChange="HandleFileInputChange"
+                   accept="image/png,image/gif,image/jpeg"
+                   @ondragenter="HandleDragEnter"
+                   @ondragleave="HandleDragLeave" />
+        <span class="float-left text-sm">Drop your image here or click to choose an image</span>
+
+    </div>
+
+    @if ((fileTypeError || fileSizeError))
+    {
+        <ul class="validation-errors mb-0">
+            @if (fileTypeError)
+            {
+                <li class="validation-message">Only image files are accepted.</li>
+            }
+            @if (fileSizeError)
+            {
+                <li class="validation-message">The max file size is @MaxFileSizeMB MB.</li>
+            }
+        </ul>
+    }
+    @if (AllowMultiple && selectedFiles != null && selectedFiles.Count > 0)
+    {
+        <div class="col-12">
+            <ul>
+                @foreach (var file in selectedFiles)
+                {
+                    <li>
+                        @file.Name
+                        <button class="btn btn-link text-danger p-0 pl-0" type="button" @onclick="@(e => RemoveFile(file))">
+                            <span tabindex="0" title="Remove">🗙</span>
+                        </button>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+
+@code {
+    [Parameter] public bool AllowMultiple { get; set; } = false;
+    [Parameter] public EventCallback<IFileListEntry> ImageSelectedEventCallback { get; set; }
+    [Parameter] public EventCallback<bool> ImageClearEventCallback { get; set; }
+    private short _pageUid;
+    [Parameter]
+    public short PageUID
+    {
+        get => _pageUid;
+        set
+        {
+            _pageUid = value;
+            MakeImageUrl();
+        }
+    }
+    private string _ImageKey;
+    [Parameter]
+    public string ImageKey
+    {
+        get => _ImageKey;
+        set
+        {
+            _ImageKey = value;
+            MakeImageUrl();
+        }
+    }
+    private string ImageSrc { get; set; }
+    private string PreviewImageDataUri { get; set; }
+    private string multipleAtr = "";
+    const int MaxFileSizeMB = 5;
+    const int MaxFileSize = MaxFileSizeMB * 1024 * 1024; // 5MB
+    private string dropClass = "";
+    private bool fileSizeError = false;
+    private bool fileTypeError = false;
+    private List<IFileListEntry> selectedFiles = new List<IFileListEntry>();
+
+    private void HandleDragEnter()
+    {
+        dropClass = "dropzone-drag";
+    }
+
+    private void HandleDragLeave()
+    {
+        dropClass = "";
+    }
+
+    public void MakeImageUrl()
+    {
+        if (PageUID != 0 && !string.IsNullOrWhiteSpace(ImageKey))
+            ImageSrc = $@"{Init.Api}/api/cda/?puid={PageUID}&key={ImageKey}";
+        else
+            ImageSrc = "";
+    }
+
+    private async Task HandleFileInputChange(IFileListEntry[] files)
+    {
+        dropClass = "";
+        fileSizeError = false;
+        fileTypeError = false;
+        List<string> acceptedFileTypes = new List<string>() { "image/png", "image/jpeg", "image/gif" };
+        if (files != null)
+        {
+            foreach (var file in files)
+            {
+                bool error = false;
+                if (file.Size > MaxFileSize)
+                {
+                    error = true;
+                    fileSizeError = true;
+                }
+
+                if (!acceptedFileTypes.Contains(file.Type))
+                {
+                    error = true;
+                    fileTypeError = true;
+                }
+
+                //keep the good files
+                if (!error)
+                {
+                    if (!AllowMultiple) selectedFiles.Clear();
+                    selectedFiles.Add(file);
+                    await HandleImageSelection(file);
+                    await ImageSelectedEventCallback.InvokeAsync(file);
+                    StateHasChanged();
+                }
+            }
+        }
+    }
+
+    async Task HandleImageSelection(IFileListEntry rawFile)
+    {
+        if (rawFile != null)
+        {
+            // Load as an image file in memory
+            var format = "image/jpeg";
+            var imageFile = await rawFile.ToImageFileAsync(format, 640, 480);
+            var ms = new MemoryStream();
+            await imageFile.Data.CopyToAsync(ms);
+
+            // Make a data URL so we can display it
+            PreviewImageDataUri = $"data:{format};base64,{Convert.ToBase64String(ms.ToArray())}";
+
+            //status = $"Finished loading {ms.Length} bytes from {imageFile.Name}";
+        }
+    }
+
+    private void RemoveFile(IFileListEntry file)
+    {
+        if (file != null)
+        {
+            selectedFiles.Remove(file);
+            PreviewImageDataUri = "";
+        }
+    }
+
+    private async Task ClearFiles()
+    {
+        PreviewImageDataUri = "";
+        ImageSrc = "";
+        selectedFiles.Clear();
+        await ImageClearEventCallback.InvokeAsync(true);
+        //StateHasChanged();
+    }
+}

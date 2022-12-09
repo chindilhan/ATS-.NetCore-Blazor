@@ -1,0 +1,11 @@
+﻿@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+<h3>RedirectToLogin</h3>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateTo($"");
+    }
+}

@@ -1,0 +1,117 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<nav class="navbar navbar-expand-lg navbar-expand-md pl-lg-5 pr-lg-5 navbar-dark"
+     style="background-image: linear-gradient(90deg,var(--fabric-theme-lighter,#37A000),var(--fabric-theme-base,#37A000));">
+
+    <div class="container w-100">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="/">Vital Jobs</a>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Jobs/Dashboard">Jobs</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Candidate/Search">Candidates</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Candidate/Search">Messages</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Talent/Search">Talent Search</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Corporate/Settings">Corporate</a>
+                </li>
+            </ul>
+                       
+
+            <div class="d-flex my-auto ms-auto">
+
+                <ul class="navbar-nav mr-2">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="bi bi-plus-circle font-icon-xl"></i>
+                        </a>
+                        <div class="dropdown-menu medium">
+                            <a class="dropdown-item" href="/Jobs/Create">Create a Job</a>
+                            <a class="dropdown-item" href="/Candidate/Create">Add a Candidate</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/Corporate/Settings?catg=team">Add a Team Member</a>
+                            <a class="dropdown-item" href="/Corporate/Settings?catg=dept">Add a Department</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/Corporate/Settings?catg=templates">Add an Email Template</a>
+                            <a class="dropdown-item" href="/Corporate/Settings?catg=interview-tools">Add an Interaview Template</a>
+                        </div>
+                    </li>
+                </ul>
+
+                <form class="my-auto me-2">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <button class="btn btn-outline" style="background:white;" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+
+            </div>
+
+            <ul class="nav navbar-nav navbar-right nav-menu my-auto ms-3">
+                <AuthorizeView>
+                    <Authorized>
+                        @*To display, when the user is Logged In *@
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle mx-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="httpContextAccessor.HttpContext.User.FindFirst(x => x.Type == " profileurl").Value"
+                                        onerror="this.onerror=null;this.src='/assets/img/profile-avatar.svg';"
+                                        class="rounded-circle avatar-navmenu-profile-sm border-1">
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="">@context.User.Identity?.Name!</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/Candidate/Profile">Profile</a>
+                                <a class="dropdown-item" href="/Candidate/Settings">Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" @onclick="BeginLogout">Sign out</a>
+                            </div>
+                        </li>                        
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item my-auto">
+                            <a class="px-0" href="authentication/login">
+                                <span class="dn-lg">Login</span>
+                            </a>
+                            <span class="dn-lg">|</span>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <a class="ps-1" href="authentication/register">
+                                <span class="dn-lg">Register</span>
+                            </a>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </ul>
+
+        </div>
+    </div>
+
+</nav>
+
+
+@code{
+    private async Task BeginLogout(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}

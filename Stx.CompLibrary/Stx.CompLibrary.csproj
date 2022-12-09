@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="KlaInputDateCode.cs" />
+    <Compile Remove="StxPageHeader.razor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="StxPageHeader.razor" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="BlazorInputFile" Version="0.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Stx.Shared\Stx.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

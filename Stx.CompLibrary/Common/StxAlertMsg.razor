@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@inherits StxAlertMsgBase
+
+<div class="container mx-auto">
+    <div class="row">  
+        <div class="col alert alert-dismissible fade show text-sm docalert my-1 @MsgStyles" role="alert">
+            <strong class="docalert-icon">
+                <i class="@MsgIconStyles"></i>
+            </strong>
+            <span class="docalert-msg">
+                @AlertMessage.Message
+            </span>
+            <button type="button" class="pt-1 close" data-dismiss="alert" aria-label="Close" @onclick="CloseButtonClicked">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>

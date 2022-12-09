@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "wwwroot/css/radzen-default.css",
+    "inputFile": "wwwroot/css/radzen-default.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/app.css",
+    "inputFile": "wwwroot/css/app.scss"
+  }
+]
