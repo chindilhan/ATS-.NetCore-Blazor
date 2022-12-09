@@ -1,4 +1,4 @@
 # ATS-.NetCore-Blazor
-Applicant Tracking System Blazor application with .Net Core
+Applicant Tracking System (ATS) Blazor application with .Net Core
 
-[My Awesome Wiki](../../wiki)
+[Applicant Tracking System Blazor - Wiki](../../wiki)
